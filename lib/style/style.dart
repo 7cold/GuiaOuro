@@ -106,6 +106,12 @@ TextStyle subTitulo2 = TextStyle(
   fontSize: 25,
 );
 
+TextStyle subTituloMain2 = TextStyle(
+  fontFamily: heavy,
+  color: corSecundaria,
+  fontSize: 25,
+);
+
 TextStyle subTitulo3 = TextStyle(
   fontFamily: semi,
   color: corFundoDark,

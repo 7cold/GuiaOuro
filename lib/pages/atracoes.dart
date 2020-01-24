@@ -392,11 +392,8 @@ class _AtracoesDetalhes extends StatefulWidget {
 }
 
 class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
-  var naoRemover = "nao remover";
-
   Column buildEvento(DocumentSnapshot doc, BuildContext context) {
-    var teste = doc.data.length;
-    if (doc.data['evento'] == 'nao remover') {
+    if (doc.data['evento'] == 'nao apagar') {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -405,7 +402,7 @@ class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
                 child: Text(
-              "Ainda não há eventos programados",
+              "Não há mais eventos",
               style: subTitulo3white,
             )),
           )
@@ -595,6 +592,7 @@ class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
                                       .document(widget.id)
                                       .collection('eventos')
                                       .orderBy('data', descending: true)
+                                      .limit(3)
                                       .snapshots(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {

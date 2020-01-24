@@ -63,9 +63,12 @@ class Home extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset(
-                            "lib/style/images/logo.png",
-                            scale: 25,
+                          Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: Image.asset(
+                              "lib/style/images/logo.png",
+                              scale: 25,
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 10),
@@ -73,11 +76,11 @@ class Home extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   "Seu guia em",
-                                  style: subTitulo3,
+                                  style: subTituloMain2,
                                 ),
                                 Text(
                                   "Ouro Fino",
-                                  style: subTitulo3,
+                                  style: subTituloMain2,
                                 )
                               ],
                             ),
@@ -102,7 +105,7 @@ class Home extends StatelessWidget {
                     pagina: Gastronomia(),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: 20, bottom: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
