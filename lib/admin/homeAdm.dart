@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/admin/atracoesConsulta.dart';
 import 'package:teste2/admin/noticiasConsulta.dart';
-import 'package:teste2/admin/sign_in.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomeAdm extends StatefulWidget {
   const HomeAdm({Key key, this.user}) : super(key: key);
@@ -18,15 +15,15 @@ class HomeAdm extends StatefulWidget {
 }
 
 class _HomeAdmState extends State<HomeAdm> {
-  void _signOut() async {
-    await _auth.signOut();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SignInPage(),
-      ),
-    );
-  }
+  // void _signOut() async {
+  //   await _auth.signOut();
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => SignInPage(),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

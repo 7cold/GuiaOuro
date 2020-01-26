@@ -166,6 +166,12 @@ TextStyle fonteTag = TextStyle(
   fontSize: 18,
 );
 
+TextStyle fonteTag2 = TextStyle(
+  fontFamily: reg,
+  color: corFundoDark,
+  fontSize: 18,
+);
+
 TextStyle card22 = TextStyle(
   fontFamily: bold,
   color: Colors.white,

@@ -4,7 +4,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/pages/atracoes.dart';
 import 'package:teste2/pages/gastronomia.dart';
-import 'package:teste2/pages/lazyloader.dart';
 import 'package:teste2/pages/noticiasCategorias.dart';
 import 'package:teste2/pages/sobre.dart';
 import 'package:teste2/style/style.dart';
@@ -100,10 +99,9 @@ class Home extends StatelessWidget {
                     pagina: Atracoes(),
                   ),
                   _Feed(
-                    text: "Gastronomia",
-                    foto: 'lib/style/images/gastronomia.jpg',
-                    pagina: Gastronomia(),
-                  ),
+                      text: "Gastronomia",
+                      foto: 'lib/style/images/gastronomia.jpg',
+                      pagina: Gastronomia()),
                   Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 15),
                     child: Row(

@@ -36,7 +36,6 @@ class _NoticiasCadState extends State<NoticiasCad> {
   DateTime data;
   File _imageFile;
   StorageUploadTask uploadTask;
-  StreamSubscription streamSubscription;
   String downloadUrl;
   bool loading = false;
   double _porcentagem;

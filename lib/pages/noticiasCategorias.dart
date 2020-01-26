@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/pages/noticias.dart';
 import 'package:teste2/style/style.dart';
 
-class NoticiasCategorias extends StatelessWidget {
+class NoticiasCategorias extends StatefulWidget {
+  @override
+  _NoticiasCategoriasState createState() => _NoticiasCategoriasState();
+}
+
+class _NoticiasCategoriasState extends State<NoticiasCategorias> {
+  double animatedContainer = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,12 +29,124 @@ class NoticiasCategorias extends StatelessWidget {
                   child: FadeInAnimation(child: widget),
                 ),
                 children: <Widget>[
+                  //texto categorias
                   Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 40, top: 20),
+                    padding: EdgeInsets.only(left: 20, bottom: 20, top: 20),
                     child: Text(
                       "Categorias",
                       style: tituloPrincipal,
                     ),
+                  ),
+                  //texto pesquisa
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        setState(() {
+                          animatedContainer = 200;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: corPrincipal2,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                left: 20,
+                                top: 13,
+                                child: Text(
+                                  "Pesquisa Notícia",
+                                  style: subTitulo3white,
+                                ),
+                              ),
+                              Positioned(
+                                right: 20,
+                                top: 13,
+                                child: Icon(
+                                  LineAwesomeIcons.arrow_down,
+                                  color: corFundoLight,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //expanded pesquisa
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: AnimatedContainer(
+                      duration: Duration(seconds: 1),
+                      width: MediaQuery.of(context).size.width,
+                      height: animatedContainer,
+                      decoration: BoxDecoration(
+                          color: corPrincipal2.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                              right: 20,
+                              bottom: 10,
+                              child: InkWell(
+                                highlightColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    animatedContainer = 0;
+                                  });
+                                },
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Icon(
+                                    LineAwesomeIcons.arrow_up,
+                                    color: corFundoDark,
+                                  ),
+                                ),
+                              )),
+                          Padding(
+                            padding:
+                                EdgeInsets.only(left: 20, right: 20, top: 20),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                errorStyle: fonteErroInput,
+                                fillColor: Colors.white,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: corPrincipal2, width: 2),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(7.0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.transparent, width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(7.0)),
+                                ),
+                                prefixIcon: Icon(
+                                  LineAwesomeIcons.glass,
+                                  color: corSecundaria,
+                                ),
+                                hintText: "Pesquisa",
+                                hintStyle: fonteCampoTextoHint,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 100),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
                   ),
                   _FeedCategorias(
                       "Todas as notícias",

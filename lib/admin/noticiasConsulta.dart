@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter_rounded_progress_bar/flutter_rounded_progress_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -30,7 +29,6 @@ class NoticiasConsulta extends StatefulWidget {
 }
 
 class NoticiasConsultaState extends State<NoticiasConsulta> {
-  final _formKey = GlobalKey<FormState>();
   final format = new DateFormat.yMMMd().add_Hm();
   DocumentSnapshot _currentDocument;
 
@@ -44,7 +42,6 @@ class NoticiasConsultaState extends State<NoticiasConsulta> {
   DateTime data;
   File _imageFile;
   StorageUploadTask uploadTask;
-  StreamSubscription streamSubscription;
   String downloadUrl;
   bool loading = false;
   double _porcentagem;

@@ -165,6 +165,7 @@ class _NoticiasState extends State<Noticias> {
                     .collection("noticias")
                     .orderBy("data", descending: true)
                     .where("categoria", isEqualTo: categoria)
+                    .limit(20)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
