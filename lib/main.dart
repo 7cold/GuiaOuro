@@ -4,12 +4,133 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/pages/atracoes.dart';
 import 'package:teste2/pages/gastronomia.dart';
-import 'package:teste2/pages/noticiasCategorias.dart';
+import 'package:teste2/pages/noticias.dart';
 import 'package:teste2/pages/sobre.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
+import 'package:teste2/style/widget-efeito-rota.dart';
+import 'package:timeago_flutter/timeago_flutter.dart';
 
-void main() => runApp(MyApp());
+const localeList = [
+  'en',
+  'en_short',
+  'es',
+  'es_short',
+  'de',
+  'fr',
+  'ja',
+  'id',
+  'pt_BR',
+  'pt_BR_short',
+  'zh',
+  'zh_CN',
+  'it',
+  'fa',
+  'ru',
+  'tr',
+  'pl',
+  'th',
+  'th_short',
+  'nb_NO',
+  'nb_NO_short',
+  'nn_NO',
+  'nn_NO_short',
+  'ku',
+  'ku_short',
+  'ar',
+  'ar_short',
+  'ko',
+  'en_custom',
+  'ro',
+  'ro_short'
+];
+
+main() async {
+  // Add additional locales
+  localeList.forEach((locale) {
+    switch (locale) {
+      case 'de':
+        setLocaleMessages(locale, DeMessages());
+        break;
+      case 'fr':
+        setLocaleMessages(locale, FrMessages());
+        break;
+      case 'ja':
+        setLocaleMessages(locale, JaMessages());
+        break;
+      case 'id':
+        setLocaleMessages(locale, IdMessages());
+        break;
+      case 'pt_BR':
+        setLocaleMessages(locale, PtBrMessages());
+        break;
+      case 'pt_BR_short':
+        setLocaleMessages(locale, PtBrShortMessages());
+        break;
+      case 'zh':
+        setLocaleMessages(locale, ZhMessages());
+        break;
+      case 'zh_CN':
+        setLocaleMessages(locale, ZhCnMessages());
+        break;
+      case 'it':
+        setLocaleMessages(locale, ItMessages());
+        break;
+      case 'fa':
+        setLocaleMessages(locale, FaMessages());
+        break;
+      case 'ru':
+        setLocaleMessages(locale, RuMessages());
+        break;
+      case 'tr':
+        setLocaleMessages(locale, TrMessages());
+        break;
+      case 'pl':
+        setLocaleMessages(locale, PlMessages());
+        break;
+      case 'th':
+        setLocaleMessages(locale, ThMessages());
+        break;
+      case 'th_short':
+        setLocaleMessages(locale, ThShortMessages());
+        break;
+      case 'nb_NO':
+        setLocaleMessages(locale, NbNoMessages());
+        break;
+      case 'nb_NO_short':
+        setLocaleMessages(locale, NbNoShortMessages());
+        break;
+      case 'nn_NO':
+        setLocaleMessages(locale, NnNoMessages());
+        break;
+      case 'nn_NO_short':
+        setLocaleMessages(locale, NnNoShortMessages());
+        break;
+      case 'ku':
+        setLocaleMessages(locale, KuMessages());
+        break;
+      case 'ku_short':
+        setLocaleMessages(locale, KuShortMessages());
+        break;
+      case 'ar':
+        setLocaleMessages(locale, ArMessages());
+        break;
+      case 'ar_short':
+        setLocaleMessages(locale, ArShortMessages());
+        break;
+      case 'ko':
+        setLocaleMessages(locale, KoMessages());
+        break;
+      case 'ro':
+        setLocaleMessages(locale, RoMessages());
+        break;
+      case 'ro_short':
+        setLocaleMessages(locale, RoShortMessages());
+        break;
+    }
+  });
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -21,12 +142,12 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('pt'), // PT
+        const Locale('pt', 'BR'),
       ],
-      title: 'Guia Ouro',
+      title: 'GuiaOuro',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.blue,
         accentColor: white,
         brightness: Brightness.light,
       ),
@@ -91,7 +212,7 @@ class Home extends StatelessWidget {
                   _Feed(
                     text: "Notícias",
                     foto: 'lib/style/images/noticias.jpg',
-                    pagina: NoticiasCategorias(),
+                    pagina: Noticias(),
                   ),
                   _Feed(
                     text: "Atrações",
@@ -141,14 +262,16 @@ class _Feed extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 20, left: 30, right: 30),
       child: Material(
-        elevation: 3,
-        shadowColor: corPrincipal2.withOpacity(0.3),
+        elevation: 5,
+        shadowColor: corPrincipal2.withOpacity(0.5),
         borderRadius: BorderRadius.circular(7),
         child: InkWell(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => pagina),
+              ScaleRoute(
+                page: pagina,
+              ),
             );
           },
           child: Container(

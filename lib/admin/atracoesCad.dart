@@ -66,6 +66,7 @@ class _AtracoesCadState extends State<AtracoesCad> {
                             icone: LineAwesomeIcons.pencil,
                             controller: controllerEvento,
                             variavel: evento = controllerEvento.text,
+                            textCap: TextCapitalization.words,
                           ),
                           Padding(
                             padding:

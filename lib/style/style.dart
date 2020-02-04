@@ -156,7 +156,7 @@ TextStyle textoPaginaLight = TextStyle(
 
 TextStyle textoCardwhite = TextStyle(
   fontFamily: textoReg,
-  color: Colors.white70,
+  color: corFundoLight.withOpacity(0.8),
   fontSize: 22,
 );
 

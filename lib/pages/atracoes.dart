@@ -19,35 +19,39 @@ class Atracoes extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 10),
-          child: Column(
-            children: <Widget>[
-              Material(
-                color: corFundoLight,
-                elevation: 4,
-                shadowColor: corPrincipal.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(7),
-                child: InkWell(
-                  onTap: () {
-                    var eventosChip = doc.data['eventosChip'];
+          child: Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(7),
+            shadowColor: corPrincipal2.withOpacity(0.4),
+            child: InkWell(
+              onTap: () {
+                var eventosChip = doc.data['eventosChip'];
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => _AtracoesDetalhes(
-                                img: "${doc.data['img']}",
-                                atracao: "${doc.data['atracao']}",
-                                descricao: "${doc.data['descricao']}",
-                                eventosChip: eventosChip,
-                                id: doc.documentID,
-                              )),
-                    );
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => _AtracoesDetalhes(
+                            img: "${doc.data['img']}",
+                            atracao: "${doc.data['atracao']}",
+                            descricao: "${doc.data['descricao']}",
+                            eventosChip: eventosChip,
+                            id: doc.documentID,
+                          )),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: corFundoLight,
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 45),
                   child: Container(
                     decoration: BoxDecoration(
                       color: corFundoLight,
                       borderRadius: BorderRadius.circular(7),
                     ),
-                    height: 150,
+                    height: 170,
                     width: double.infinity,
                     child: Stack(
                       children: <Widget>[
@@ -65,8 +69,8 @@ class Atracoes extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
                           ),
-                          height: 150,
-                          width: double.infinity,
+                          height: 110,
+                          width: MediaQuery.of(context).size.width,
                           child: ClipRRect(
                             borderRadius: new BorderRadius.circular(7.0),
                             child: Hero(
@@ -80,23 +84,8 @@ class Atracoes extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: 10,
-                          top: 10,
-                          child: Hero(
-                            transitionOnUserGestures: true,
-                            tag: "${doc.data['atracao']}",
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                "${doc.data['atracao']}",
-                                style: card22,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 10,
-                          bottom: 10,
+                          left: 0,
+                          bottom: 5,
                           child: BotaoRota(
                             corBotao: corPrincipal2,
                             height: 35,
@@ -115,9 +104,24 @@ class Atracoes extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        )
+        ),
+        Positioned(
+          left: 40,
+          top: 20,
+          child: Hero(
+            transitionOnUserGestures: true,
+            tag: "${doc.data['atracao']}",
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                "${doc.data['atracao']}",
+                style: subTitulo2,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -229,7 +233,10 @@ class _PrincipaisAtracoes extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return new Text(
+                'Carregando...',
+                style: subTitulo3,
+              );
             default:
               return ListView(
                 physics: BouncingScrollPhysics(),
@@ -237,10 +244,10 @@ class _PrincipaisAtracoes extends StatelessWidget {
                 children:
                     snapshot.data.documents.map((DocumentSnapshot document) {
                   return Padding(
-                    padding: EdgeInsets.only(left: 20, bottom: 20),
+                    padding: EdgeInsets.only(left: 10, bottom: 20, right: 10),
                     child: Material(
-                      elevation: 3,
-                      shadowColor: corPrincipal.withOpacity(0.4),
+                      elevation: 7,
+                      shadowColor: corPrincipal2.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(7),
                       child: Container(
                         decoration: BoxDecoration(

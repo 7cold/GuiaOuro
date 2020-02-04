@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teste2/style/style.dart';
+import 'package:teste2/style/widget-efeito-rota.dart';
 
 class Botao extends StatelessWidget {
   final String texto;
@@ -61,7 +62,7 @@ class BotaoUploadImg extends StatelessWidget {
 
   const BotaoUploadImg(
       {Key key,
-      this.texto,
+      this.texto = "",
       this.icone,
       this.funcao,
       this.height,
@@ -71,28 +72,25 @@ class BotaoUploadImg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: ButtonTheme(
-        height: height,
-        minWidth: width,
-        child: RaisedButton.icon(
-          highlightElevation: 3,
-          color: corPrincipal2,
-          elevation: 0,
-          icon: Icon(icone),
-          label: Text(
-            texto,
-            style: fonteBotao,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0),
-          ),
-          textColor: corFundoLight,
-          onPressed: () {
-            funcao();
-          },
+    return ButtonTheme(
+      height: height,
+      minWidth: width,
+      child: RaisedButton.icon(
+        highlightElevation: 3,
+        color: corPrincipal2,
+        elevation: 0,
+        icon: Icon(icone),
+        label: Text(
+          texto,
+          style: fonteBotao,
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(5.0),
+        ),
+        textColor: corFundoLight,
+        onPressed: () {
+          funcao();
+        },
       ),
     );
   }
@@ -140,8 +138,8 @@ class BotaoRota extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => rota,
+            ScaleRoute(
+              page: rota,
             ),
           );
         },

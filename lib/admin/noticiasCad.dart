@@ -35,8 +35,20 @@ class _NoticiasCadState extends State<NoticiasCad> {
   String link;
   DateTime data;
   File _imageFile;
+  File _imageFile_photos1;
+  File _imageFile_photos2;
+  File _imageFile_photos3;
+  File _imageFile_photos4;
   StorageUploadTask uploadTask;
+  StorageUploadTask uploadTask_photos1;
+  StorageUploadTask uploadTask_photos2;
+  StorageUploadTask uploadTask_photos3;
+  StorageUploadTask uploadTask_photos4;
   String downloadUrl;
+  String downloadUrl_photos1;
+  String downloadUrl_photos2;
+  String downloadUrl_photos3;
+  String downloadUrl_photos4;
   bool loading = false;
   double _porcentagem;
 
@@ -53,6 +65,18 @@ class _NoticiasCadState extends State<NoticiasCad> {
 
   StorageReference _reference = FirebaseStorage.instance.ref().child(
       'noticiasImagens/${Path.basename(DateTime.now().toString() + '.jpg')}');
+
+  StorageReference _reference_photos1 = FirebaseStorage.instance.ref().child(
+      'noticiasImagens/photos1-${Path.basename(DateTime.now().toString() + '.jpg')}');
+
+  StorageReference _reference_photos2 = FirebaseStorage.instance.ref().child(
+      'noticiasImagens/photos2-${Path.basename(DateTime.now().toString() + '.jpg')}');
+
+  StorageReference _reference_photos3 = FirebaseStorage.instance.ref().child(
+      'noticiasImagens/photos3-${Path.basename(DateTime.now().toString() + '.jpg')}');
+
+  StorageReference _reference_photos4 = FirebaseStorage.instance.ref().child(
+      'noticiasImagens/photos4-${Path.basename(DateTime.now().toString() + '.jpg')}');
 
   Future getImage() async {
     File image;
@@ -88,14 +112,167 @@ class _NoticiasCadState extends State<NoticiasCad> {
     return downloadUrl;
   }
 
+//____________________________________________
+  Future getImage_photos1() async {
+    File image_photos1;
+
+    image_photos1 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile_photos1 = image_photos1;
+    });
+  }
+
+  Future uploadImage_photos1() async {
+    StorageUploadTask uploadTask_photos1 =
+        _reference_photos1.putFile(_imageFile_photos1);
+
+    final StreamSubscription<StorageTaskEvent> streamSubscription_photos1 =
+        uploadTask_photos1.events.listen((event) {
+      //print('EVENT ${event.type}');
+      setState(() {
+        loading = true;
+        _porcentagem = event.snapshot.bytesTransferred.toDouble() /
+            event.snapshot.totalByteCount.toDouble();
+
+        //print(_porcentagem);
+      });
+    });
+
+    await uploadTask_photos1.onComplete;
+
+    streamSubscription_photos1.cancel();
+
+    var downloadUrl_photos1 = await _reference_photos1.getDownloadURL();
+
+    return downloadUrl_photos1;
+  }
+
+//____________________________________________
+
+//____________________________________________
+  Future getImage_photos2() async {
+    File image_photos2;
+
+    image_photos2 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile_photos2 = image_photos2;
+    });
+  }
+
+  Future uploadImage_photos2() async {
+    StorageUploadTask uploadTask_photos2 =
+        _reference_photos2.putFile(_imageFile_photos2);
+
+    final StreamSubscription<StorageTaskEvent> streamSubscription_photos2 =
+        uploadTask_photos2.events.listen((event) {
+      //print('EVENT ${event.type}');
+      // setState(() {
+      //   loading = true;
+      //   _porcentagem = event.snapshot.bytesTransferred.toDouble() /
+      //       event.snapshot.totalByteCount.toDouble();
+
+      //   //print(_porcentagem);
+      // });
+    });
+
+    await uploadTask_photos2.onComplete;
+
+    streamSubscription_photos2.cancel();
+
+    var downloadUrl_photos2 = await _reference_photos2.getDownloadURL();
+
+    return downloadUrl_photos2;
+  }
+
+//____________________________________________
+
+//____________________________________________
+  Future getImage_photos3() async {
+    File image_photos3;
+
+    image_photos3 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile_photos3 = image_photos3;
+    });
+  }
+
+  Future uploadImage_photos3() async {
+    StorageUploadTask uploadTask_photos3 =
+        _reference_photos3.putFile(_imageFile_photos3);
+
+    final StreamSubscription<StorageTaskEvent> streamSubscription_photos3 =
+        uploadTask_photos3.events.listen((event) {
+      //print('EVENT ${event.type}');
+      // setState(() {
+      //   loading = true;
+      //   _porcentagem = event.snapshot.bytesTransferred.toDouble() /
+      //       event.snapshot.totalByteCount.toDouble();
+
+      //   //print(_porcentagem);
+      // });
+    });
+
+    await uploadTask_photos3.onComplete;
+
+    streamSubscription_photos3.cancel();
+
+    var downloadUrl_photos3 = await _reference_photos3.getDownloadURL();
+
+    return downloadUrl_photos3;
+  }
+
+//____________________________________________
+
+//____________________________________________
+  Future getImage_photos4() async {
+    File image_photos4;
+
+    image_photos4 = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile_photos4 = image_photos4;
+    });
+  }
+
+  Future uploadImage_photos4() async {
+    StorageUploadTask uploadTask_photos4 =
+        _reference_photos4.putFile(_imageFile_photos4);
+
+    final StreamSubscription<StorageTaskEvent> streamSubscription_photos4 =
+        uploadTask_photos4.events.listen((event) {
+      //print('EVENT ${event.type}');
+      // setState(() {
+      //   loading = true;
+      //   _porcentagem = event.snapshot.bytesTransferred.toDouble() /
+      //       event.snapshot.totalByteCount.toDouble();
+
+      //   //print(_porcentagem);
+      // });
+    });
+
+    await uploadTask_photos4.onComplete;
+
+    streamSubscription_photos4.cancel();
+
+    var downloadUrl_photos4 = await _reference_photos4.getDownloadURL();
+
+    return downloadUrl_photos4;
+  }
+
+//____________________________________________
+
   CampoTexto textFormTitulo() {
     return CampoTexto(
       controller: controllerTitulo,
       variavel: titulo = controllerTitulo.text,
-      numCaracteres: 80,
+      numCaracteres: 100,
       hintText: "Título",
       icone: LineAwesomeIcons.pencil,
       textInputAction: TextInputAction.done,
+      textCap: TextCapitalization.words,
     );
   }
 
@@ -173,6 +350,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
       hintText: "Fonte da Matéria",
       icone: LineAwesomeIcons.search,
       textInputAction: TextInputAction.done,
+      textCap: TextCapitalization.words,
     );
   }
 
@@ -331,10 +509,10 @@ class _NoticiasCadState extends State<NoticiasCad> {
             child: BotaoUploadImg(
               corBotao: corFundoDark,
               funcao: getImage,
-              height: 45,
+              height: 35,
               icone: Icons.image,
-              texto: "Selec. Imagem",
-              width: 200,
+              texto: "Img principal",
+              width: 0,
             )),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -347,6 +525,50 @@ class _NoticiasCadState extends State<NoticiasCad> {
                 ),
         ),
       ],
+    );
+  }
+
+  BotaoUploadImg textFormImg_photos1() {
+    return BotaoUploadImg(
+      corBotao: corFundoDark,
+      funcao: getImage_photos1,
+      height: 35,
+      texto: "...1",
+      icone: Icons.image,
+      width: 0,
+    );
+  }
+
+  BotaoUploadImg textFormImg_photos2() {
+    return BotaoUploadImg(
+      corBotao: corFundoDark,
+      funcao: getImage_photos2,
+      height: 35,
+      texto: "...2",
+      icone: Icons.image,
+      width: 0,
+    );
+  }
+
+  BotaoUploadImg textFormImg_photos3() {
+    return BotaoUploadImg(
+      corBotao: corFundoDark,
+      funcao: getImage_photos3,
+      height: 35,
+      texto: "...3",
+      icone: Icons.image,
+      width: 0,
+    );
+  }
+
+  BotaoUploadImg textFormImg_photos4() {
+    return BotaoUploadImg(
+      corBotao: corFundoDark,
+      funcao: getImage_photos4,
+      height: 35,
+      texto: "...4",
+      icone: Icons.image,
+      width: 0,
     );
   }
 
@@ -379,20 +601,121 @@ class _NoticiasCadState extends State<NoticiasCad> {
                       textFormFonte(),
                       textFormLink(),
                       textFormImg(),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: corPrincipal2.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  textFormImg_photos1(),
+                                  _imageFile_photos1 == null
+                                      ? Container(
+                                          height: 100,
+                                          width: 100,
+                                        )
+                                      : Image.file(
+                                          _imageFile_photos1,
+                                          height: 100.0,
+                                          width: 100.0,
+                                        ),
+                                  _imageFile_photos1 != null
+                                      ? Column(
+                                          children: <Widget>[
+                                            textFormImg_photos2(),
+                                            _imageFile_photos2 == null
+                                                ? Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                  )
+                                                : Image.file(
+                                                    _imageFile_photos2,
+                                                    height: 100.0,
+                                                    width: 100.0,
+                                                  ),
+                                          ],
+                                        )
+                                      : Container(
+                                          height: 100,
+                                          width: 100,
+                                        ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  _imageFile_photos2 != null
+                                      ? Column(
+                                          children: <Widget>[
+                                            textFormImg_photos3(),
+                                            _imageFile_photos3 == null
+                                                ? Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                  )
+                                                : Image.file(
+                                                    _imageFile_photos3,
+                                                    height: 100.0,
+                                                    width: 100.0,
+                                                  ),
+                                          ],
+                                        )
+                                      : Container(
+                                          height: 100,
+                                          width: 100,
+                                        ),
+                                  _imageFile_photos3 != null
+                                      ? Column(
+                                          children: <Widget>[
+                                            textFormImg_photos4(),
+                                            _imageFile_photos4 == null
+                                                ? Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                  )
+                                                : Image.file(
+                                                    _imageFile_photos4,
+                                                    height: 100.0,
+                                                    width: 100.0,
+                                                  ),
+                                          ],
+                                        )
+                                      : Container(
+                                          height: 100,
+                                          width: 100,
+                                        ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       loading
                           ? Padding(
                               padding: EdgeInsets.only(left: 20, right: 20),
                               child: RoundedProgressBar(
+                                childCenter: Text(
+                                  "Aguarde",
+                                  style: subTitulo4white,
+                                ),
                                 percent: _porcentagem * 100,
                               ),
                             )
                           : SizedBox(),
                       Botao(
-                        texto: "Criar Notícia",
+                        texto: "Salvar Notícia",
                         icone: LineAwesomeIcons.save,
                         funcao: createNoticias,
                         height: 45,
-                        width: 200,
+                        width: MediaQuery.of(context).size.width,
                         corBotao: corPrincipal2,
                       ),
                     ],
@@ -413,6 +736,22 @@ class _NoticiasCadState extends State<NoticiasCad> {
 
       downloadUrl = await uploadImage();
 
+      _imageFile_photos1 == null
+          ? downloadUrl_photos1 = "null"
+          : downloadUrl_photos1 = await uploadImage_photos1();
+
+      _imageFile_photos2 == null
+          ? downloadUrl_photos2 = "null"
+          : downloadUrl_photos2 = await uploadImage_photos2();
+
+      _imageFile_photos3 == null
+          ? downloadUrl_photos3 = "null"
+          : downloadUrl_photos3 = await uploadImage_photos3();
+
+      _imageFile_photos4 == null
+          ? downloadUrl_photos4 = "null"
+          : downloadUrl_photos4 = await uploadImage_photos4();
+
       DocumentReference ref = await db.collection('noticias').add({
         'titulo': '$titulo',
         'noticia': '$noticia',
@@ -422,18 +761,17 @@ class _NoticiasCadState extends State<NoticiasCad> {
         'categoria': '$categoria',
         'link': '$link',
         'image': downloadUrl.toString(),
+        'photos1': downloadUrl_photos1.toString(),
+        'photos2': downloadUrl_photos2.toString(),
+        'photos3': downloadUrl_photos3.toString(),
+        'photos4': downloadUrl_photos4.toString(),
       });
 
       setState(() => id = ref.documentID);
       print("Cadastrado com sucesso!");
+
       setState(() {
         loading = false;
-        controllerTitulo.clear();
-        controllerNoticia.clear();
-        controllerData.clear();
-        controllerFonte.clear();
-        controllerLink.clear();
-        _imageFile = null;
       });
 
       Navigator.pop(context);

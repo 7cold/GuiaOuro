@@ -12,23 +12,25 @@ class CampoTexto extends StatelessWidget {
   final double paddingLeft;
   final double paddingRight;
   final bool password;
+  final TextCapitalization textCap;
 
   String variavel;
 
-  CampoTexto({
-    Key key,
-    this.controller,
-    this.variavel,
-    this.numCaracteres,
-    this.maxLines,
-    this.icone,
-    this.hintText,
-    this.prefixText,
-    this.textInputAction,
-    this.password = false,
-    this.paddingLeft = 10,
-    this.paddingRight = 10,
-  }) : super(key: key);
+  CampoTexto(
+      {Key key,
+      this.controller,
+      this.variavel,
+      this.numCaracteres,
+      this.maxLines,
+      this.icone,
+      this.hintText,
+      this.prefixText,
+      this.textInputAction,
+      this.password = false,
+      this.paddingLeft = 10,
+      this.paddingRight = 10,
+      this.textCap = TextCapitalization.none})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +41,13 @@ class CampoTexto extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(7)),
         child: TextFormField(
           controller: controller,
+          textCapitalization: textCap,
           style: fonteCampoTexto,
           cursorColor: corSecundaria,
           maxLines: maxLines,
           obscureText: password,
           showCursor: true,
+          autofocus: true,
           textInputAction: textInputAction,
           decoration: InputDecoration(
               errorStyle: fonteErroInput,
@@ -88,6 +92,7 @@ class CampoTextoNaoObrigatorio extends StatelessWidget {
   final double paddingLeft;
   final double paddingRight;
   final bool password;
+  final TextCapitalization textCap;
 
   String variavel;
 
@@ -104,6 +109,7 @@ class CampoTextoNaoObrigatorio extends StatelessWidget {
     this.password = false,
     this.paddingLeft = 10,
     this.paddingRight = 10,
+    this.textCap = TextCapitalization.none,
   }) : super(key: key);
 
   @override
@@ -119,7 +125,9 @@ class CampoTextoNaoObrigatorio extends StatelessWidget {
           cursorColor: corSecundaria,
           maxLines: maxLines,
           obscureText: password,
+          textCapitalization: textCap,
           showCursor: true,
+          autofocus: true,
           textInputAction: textInputAction,
           decoration: InputDecoration(
               errorStyle: fonteErroInput,

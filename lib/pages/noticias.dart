@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/style/style.dart';
+import 'package:teste2/style/widget-animator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,212 +10,284 @@ import 'package:date_format/date_format.dart';
 import 'package:photo_view/photo_view.dart';
 
 class Noticias extends StatefulWidget {
-  final String categoria;
-  final String titulo;
-
-  const Noticias({Key key, this.categoria, this.titulo}) : super(key: key);
-
   @override
-  _NoticiasState createState() => _NoticiasState(categoria, titulo);
+  _NoticiasState createState() => _NoticiasState();
 }
 
 class _NoticiasState extends State<Noticias> {
-  final db = Firestore.instance;
-  final String categoria;
-  final String titulo;
+  Firestore db = Firestore.instance;
 
-  _NoticiasState(this.categoria, this.titulo);
+  List<DocumentSnapshot> noticias = [];
 
-  Container buildNoticia(DocumentSnapshot doc) {
-    var id = "${doc.documentID}";
-    return Container(
-      //color: Colors.blue,
-      child: Stack(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(bottom: 35, top: 30),
-            child: Material(
-              elevation: 5,
-              shadowColor: corPrincipal2.withOpacity(0.4),
-              borderRadius: BorderRadius.circular(15),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NoticiasDetalhes(
-                        titulo: "${doc.data['titulo']}",
-                        image: "${doc.data['image']}",
-                        noticia: "${doc.data['noticia']}",
-                        fonte: "${doc.data['fonte']}",
-                        link: "${doc.data['link']}",
-                        local: "${doc.data['local']}",
-                        categoria: "${doc.data['categoria']}",
-                        id: "${doc.documentID}",
-                        data: "${formatDate(doc.data['data'].toDate(), [
-                          dd,
-                          '/',
-                          mm,
-                          '/',
-                          yyyy,
-                          ' - ',
-                          hh,
-                          ':',
-                          mm,
-                          ' ',
-                          am
-                        ])}",
-                      ),
-                    ),
-                  );
+  bool isLoading = false;
 
-                  print("${doc.documentID}");
-                },
-                child: Container(
-                  height: 230,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Stack(
-                    children: <Widget>[
-                      Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: corPrincipal.withOpacity(0.7),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        height: 230,
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(7.0),
-                          child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: "${doc.data['image']}",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 10,
-                        left: 10,
-                        right: 0,
-                        child: Hero(
-                          tag: id.toString(),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Text("${doc.data['titulo']}", style: card20),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 265,
-            right: 10,
-            child: Hero(
-              tag: (id * 2).toString(),
-              child: Material(
-                color: Colors.transparent,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(LineAwesomeIcons.clock_o,
-                        size: 20.0, color: corFundoDark),
-                    Text(
-                      " ${timeago.format((doc.data['data'] as Timestamp).toDate(), locale: 'pt_BR')}",
-                      style: fonteData,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  bool hasMore = true;
+
+  int documentLimit = 5;
+
+  DocumentSnapshot lastDocument;
+
+  ScrollController _scrollController = ScrollController();
+
+  getNoticias() async {
+    if (!hasMore) {
+      print('No More Noticias');
+      return;
+    }
+    if (isLoading) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    QuerySnapshot querySnapshot;
+    if (lastDocument == null) {
+      querySnapshot = await db
+          .collection('noticias')
+          .orderBy('data', descending: true)
+          .limit(documentLimit)
+          .getDocuments();
+    } else {
+      querySnapshot = await db
+          .collection('noticias')
+          .orderBy('data', descending: true)
+          .startAfterDocument(lastDocument)
+          .limit(documentLimit)
+          .getDocuments();
+      print(1);
+    }
+    if (querySnapshot.documents.length < documentLimit) {
+      hasMore = false;
+    }
+    lastDocument = querySnapshot.documents[querySnapshot.documents.length - 1];
+    noticias.addAll(querySnapshot.documents);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getNoticias();
+
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.height * 0.25;
+
+      if (maxScroll - currentScroll <= delta) {
+        getNoticias();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    timeago.setLocaleMessages('pt_BR', timeago.PtBrMessages());
     return Scaffold(
       backgroundColor: corFundo,
-      body: SafeArea(
-        child: Container(
-          child: ListView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.only(left: 20, right: 20),
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  titulo,
-                  style: tituloPrincipal,
+      body: Column(children: [
+        Stack(
+          children: <Widget>[
+            Container(
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(14),
+                    bottomRight: Radius.circular(14)),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      'lib/style/images/noticias-categorias/todas-noticias.png'),
                 ),
               ),
-              StreamBuilder<QuerySnapshot>(
-                stream: db
-                    .collection("noticias")
-                    .orderBy("data", descending: true)
-                    .where("categoria", isEqualTo: categoria)
-                    .limit(20)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                        children: snapshot.data.documents
-                            .map((doc) => buildNoticia(doc))
-                            .toList());
-                  } else {
-                    return Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Material(
-                        elevation: 3,
-                        borderRadius: BorderRadius.circular(15),
-                        shadowColor: corPrincipal.withOpacity(0.7),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: corPrincipal.withOpacity(0.4),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Nenhuma notícia cadastrada..",
-                                  style: subTitulo2,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 40),
-                                  child: Image.asset(
-                                    "lib/style/images/erro/nenhuma-noticia.png",
-                                    width: 300,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
+        Expanded(
+          child: noticias.length == 0
+              ? Center(
+                  //child: Text('No Data...'),
+                  )
+              : WidgetANimator(
+                  ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    itemCount: noticias.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        //color: Colors.blue,
+                        child: Stack(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 35, top: 10, left: 20, right: 20),
+                              child: Material(
+                                elevation: 5,
+                                shadowColor: corPrincipal2.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(7),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => NoticiasDetalhes(
+                                          titulo:
+                                              "${noticias[index].data['titulo']}",
+                                          image:
+                                              "${noticias[index].data['image']}",
+                                          photos1:
+                                              "${noticias[index].data['photos1']}",
+                                          photos2:
+                                              "${noticias[index].data['photos2']}",
+                                          photos3:
+                                              "${noticias[index].data['photos3']}",
+                                          photos4:
+                                              "${noticias[index].data['photos4']}",
+                                          noticia:
+                                              "${noticias[index].data['noticia']}",
+                                          fonte:
+                                              "${noticias[index].data['fonte']}",
+                                          link:
+                                              "${noticias[index].data['link']}",
+                                          local:
+                                              "${noticias[index].data['local']}",
+                                          categoria:
+                                              "${noticias[index].data['categoria']}",
+                                          id: "${noticias[index].documentID}",
+                                          data:
+                                              "${formatDate(noticias[index].data['data'].toDate(), [
+                                            dd,
+                                            '/',
+                                            mm,
+                                            '/',
+                                            yyyy,
+                                          ])}",
+                                        ),
+                                      ),
+                                    );
+
+                                    print("${noticias[index].documentID}");
+                                  },
+                                  child: Container(
+                                    height: 220,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Center(
+                                          child: CircularProgressIndicator(
+                                            backgroundColor: corPrincipal2,
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(7),
+                                          ),
+                                          height: 230,
+                                          width: double.infinity,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                new BorderRadius.circular(7.0),
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image:
+                                                  "${noticias[index].data['image']}",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10,
+                                          child: Hero(
+                                            tag: "${noticias[index].documentID}"
+                                                .toString(),
+                                            child: Material(
+                                              color: Colors.transparent,
+                                              child: Text(
+                                                  "${noticias[index].data['titulo']}",
+                                                  style: card20),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 235,
+                              right: 20,
+                              child: Hero(
+                                tag: ("${noticias[index].documentID}" * 2)
+                                    .toString(),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(LineAwesomeIcons.clock_o,
+                                          size: 20.0, color: corFundoDark),
+                                      Text(
+                                        " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR')}",
+                                        style: fonteData,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ),
+        isLoading
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: corPrincipal2,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: corPrincipal2,
+                        strokeWidth: 1.5,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Carregando...',
+                      textAlign: TextAlign.center,
+                      style: subTitulo4white,
+                    ),
+                  ],
+                ),
+              )
+            : Container()
+      ]),
     );
   }
 }
@@ -222,6 +295,10 @@ class _NoticiasState extends State<Noticias> {
 class NoticiasDetalhes extends StatelessWidget {
   final String titulo;
   final String image;
+  final String photos1;
+  final String photos2;
+  final String photos3;
+  final String photos4;
   final String noticia;
   final String fonte;
   final String link;
@@ -230,7 +307,7 @@ class NoticiasDetalhes extends StatelessWidget {
   final String data;
   final String id;
 
-  const NoticiasDetalhes(
+  NoticiasDetalhes(
       {Key key,
       this.titulo,
       this.image,
@@ -240,7 +317,11 @@ class NoticiasDetalhes extends StatelessWidget {
       this.local,
       this.categoria,
       this.data,
-      this.id})
+      this.id,
+      this.photos1,
+      this.photos2,
+      this.photos3,
+      this.photos4})
       : super(key: key);
 
   @override
@@ -345,6 +426,93 @@ class NoticiasDetalhes extends StatelessWidget {
                             textAlign: TextAlign.justify,
                           ),
                         ),
+
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  photos1 != "null"
+                                      ? Container(
+                                          height: 100,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.3,
+                                          child: ClipRRect(
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image: "$photos1",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  Padding(padding: EdgeInsets.only(top: 5)),
+                                  photos2 != "null"
+                                      ? Container(
+                                          height: 100,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.3,
+                                          child: ClipRRect(
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image: "$photos2",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Column(
+                                children: <Widget>[
+                                  photos3 != "null"
+                                      ? Container(
+                                          height: 100,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.3,
+                                          child: ClipRRect(
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image: "$photos3",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  Padding(padding: EdgeInsets.only(top: 5)),
+                                  photos4 != "null"
+                                      ? Container(
+                                          height: 100,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2.3,
+                                          child: ClipRRect(
+                                            child: FadeInImage.memoryNetwork(
+                                              placeholder: kTransparentImage,
+                                              image: "$photos4",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 20),
                         Padding(
                           padding: EdgeInsets.only(left: 10, top: 10),
@@ -356,7 +524,7 @@ class NoticiasDetalhes extends StatelessWidget {
                         //tag
                         Padding(
                           padding: EdgeInsets.only(left: 15),
-                          child: Row(
+                          child: Wrap(
                             children: <Widget>[
                               Chip(
                                 elevation: 3,
@@ -392,6 +560,7 @@ class NoticiasDetalhes extends StatelessWidget {
                           padding:
                               EdgeInsets.only(left: 10, right: 10, bottom: 20),
                           child: Container(
+                            width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                                 color: corPrincipal2.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(7)),
