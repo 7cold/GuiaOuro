@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:teste2/admin/sign_in.dart';
+import 'package:teste2/admin/sign-in.dart';
 import 'package:teste2/style/style.dart';
 
 import 'package:teste2/style/widget-botao.dart';

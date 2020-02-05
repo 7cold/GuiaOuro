@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:teste2/admin/homeAdm.dart';
+import 'package:teste2/admin/home-adm.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-campo-texto.dart';

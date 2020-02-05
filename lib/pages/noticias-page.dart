@@ -254,36 +254,37 @@ class _NoticiasState extends State<Noticias> {
                 ),
         ),
         isLoading
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: corPrincipal2,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        backgroundColor: corPrincipal2,
-                        strokeWidth: 1.5,
+            ? Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: corPrincipal2,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          backgroundColor: corPrincipal2,
+                          strokeWidth: 1.5,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Carregando...',
-                      textAlign: TextAlign.center,
-                      style: subTitulo4white,
-                    ),
-                  ],
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Carregando...',
+                        textAlign: TextAlign.center,
+                        style: subTitulo4white,
+                      ),
+                    ],
+                  ),
                 ),
               )
             : Container()
@@ -428,91 +429,9 @@ class NoticiasDetalhes extends StatelessWidget {
                         ),
 
                         SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Column(
-                                children: <Widget>[
-                                  photos1 != "null"
-                                      ? Container(
-                                          height: 100,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ClipRRect(
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
-                                              image: "$photos1",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(),
-                                  Padding(padding: EdgeInsets.only(top: 5)),
-                                  photos2 != "null"
-                                      ? Container(
-                                          height: 100,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ClipRRect(
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
-                                              image: "$photos2",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Column(
-                                children: <Widget>[
-                                  photos3 != "null"
-                                      ? Container(
-                                          height: 100,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ClipRRect(
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
-                                              image: "$photos3",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(),
-                                  Padding(padding: EdgeInsets.only(top: 5)),
-                                  photos4 != "null"
-                                      ? Container(
-                                          height: 100,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.3,
-                                          child: ClipRRect(
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
-                                              image: "$photos4",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+
+                        GaleriaPhotos(context),
+
                         SizedBox(height: 20),
                         Padding(
                           padding: EdgeInsets.only(left: 10, top: 10),
@@ -598,6 +517,138 @@ class NoticiasDetalhes extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Row GaleriaPhotos(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Column(
+            children: <Widget>[
+              photos1 != "null"
+                  ? Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => _PhotoViewNoticiaDetalhes(
+                                image: photos1,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: ClipRRect(
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: "$photos1",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+              Padding(padding: EdgeInsets.only(top: 5)),
+              photos2 != "null"
+                  ? Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => _PhotoViewNoticiaDetalhes(
+                                image: photos2,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: ClipRRect(
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: "$photos2",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Column(
+            children: <Widget>[
+              photos3 != "null"
+                  ? Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => _PhotoViewNoticiaDetalhes(
+                                image: photos3,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: ClipRRect(
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: "$photos3",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+              Padding(padding: EdgeInsets.only(top: 5)),
+              photos4 != "null"
+                  ? Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => _PhotoViewNoticiaDetalhes(
+                                image: photos4,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 100,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          child: ClipRRect(
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image: "$photos4",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

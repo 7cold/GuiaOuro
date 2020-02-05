@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:teste2/admin/atracoesConsulta.dart';
-import 'package:teste2/admin/noticiasConsulta.dart';
+import 'package:teste2/admin/atracoes-consulta.dart';
+import 'package:teste2/admin/noticias-consulta.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 

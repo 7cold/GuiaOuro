@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:teste2/admin/atracoesCad.dart';
+import 'package:teste2/admin/atracoes-cadastro.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:date_format/date_format.dart';
-import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flushbar/flushbar.dart';
 
@@ -155,9 +154,6 @@ class EventosAtracoes extends StatefulWidget {
 }
 
 class _EventosAtracoesState extends State<EventosAtracoes> {
-  final _formKey = GlobalKey<FormState>();
-  final format = new DateFormat.yMMMd().add_Hm();
-
   final String atracao;
   final String idAtracao;
   _EventosAtracoesState(this.atracao, this.idAtracao);

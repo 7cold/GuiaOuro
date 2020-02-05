@@ -7,6 +7,7 @@ class Gastronomia extends StatelessWidget {
       backgroundColor: Color.fromRGBO(252, 190, 153, 1),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height,
             child: Row(
@@ -19,7 +20,7 @@ class Gastronomia extends StatelessWidget {
                     Center(
                       child: Image.asset(
                         "lib/style/images/emBreve.png",
-                        scale: 6,
+                        scale: 8,
                       ),
                     ),
                   ],

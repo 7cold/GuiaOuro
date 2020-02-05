@@ -34,21 +34,21 @@ class _NoticiasCadState extends State<NoticiasCad> {
   String categoria;
   String link;
   DateTime data;
-  File _imageFile;
-  File _imageFile_photos1;
-  File _imageFile_photos2;
-  File _imageFile_photos3;
-  File _imageFile_photos4;
+  File imageFile;
+  File imageFilePhotos1;
+  File imageFilePhotos2;
+  File imageFilePhotos3;
+  File imageFilePhotos4;
   StorageUploadTask uploadTask;
-  StorageUploadTask uploadTask_photos1;
-  StorageUploadTask uploadTask_photos2;
-  StorageUploadTask uploadTask_photos3;
-  StorageUploadTask uploadTask_photos4;
+  StorageUploadTask uploadTaskPhotos1;
+  StorageUploadTask uploadTaskPhotos2;
+  StorageUploadTask uploadTaskPhotos3;
+  StorageUploadTask uploadTaskPhotos4;
   String downloadUrl;
-  String downloadUrl_photos1;
-  String downloadUrl_photos2;
-  String downloadUrl_photos3;
-  String downloadUrl_photos4;
+  String downloadUrlPhotos1;
+  String downloadUrlPhotos2;
+  String downloadUrlPhotos3;
+  String downloadUrlPhotos4;
   bool loading = false;
   double _porcentagem;
 
@@ -63,19 +63,19 @@ class _NoticiasCadState extends State<NoticiasCad> {
   TextEditingController controllerLink = TextEditingController();
   TextEditingController controllerImg = TextEditingController();
 
-  StorageReference _reference = FirebaseStorage.instance.ref().child(
+  StorageReference reference = FirebaseStorage.instance.ref().child(
       'noticiasImagens/${Path.basename(DateTime.now().toString() + '.jpg')}');
 
-  StorageReference _reference_photos1 = FirebaseStorage.instance.ref().child(
+  StorageReference referencePhotos1 = FirebaseStorage.instance.ref().child(
       'noticiasImagens/photos1-${Path.basename(DateTime.now().toString() + '.jpg')}');
 
-  StorageReference _reference_photos2 = FirebaseStorage.instance.ref().child(
+  StorageReference referencePhotos2 = FirebaseStorage.instance.ref().child(
       'noticiasImagens/photos2-${Path.basename(DateTime.now().toString() + '.jpg')}');
 
-  StorageReference _reference_photos3 = FirebaseStorage.instance.ref().child(
+  StorageReference referencePhotos3 = FirebaseStorage.instance.ref().child(
       'noticiasImagens/photos3-${Path.basename(DateTime.now().toString() + '.jpg')}');
 
-  StorageReference _reference_photos4 = FirebaseStorage.instance.ref().child(
+  StorageReference referencePhotos4 = FirebaseStorage.instance.ref().child(
       'noticiasImagens/photos4-${Path.basename(DateTime.now().toString() + '.jpg')}');
 
   Future getImage() async {
@@ -84,12 +84,12 @@ class _NoticiasCadState extends State<NoticiasCad> {
     image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _imageFile = image;
+      imageFile = image;
     });
   }
 
   Future uploadImage() async {
-    StorageUploadTask uploadTask = _reference.putFile(_imageFile);
+    StorageUploadTask uploadTask = reference.putFile(imageFile);
 
     final StreamSubscription<StorageTaskEvent> streamSubscription =
         uploadTask.events.listen((event) {
@@ -107,28 +107,28 @@ class _NoticiasCadState extends State<NoticiasCad> {
 
     streamSubscription.cancel();
 
-    var downloadUrl = await _reference.getDownloadURL();
+    var downloadUrl = await reference.getDownloadURL();
 
     return downloadUrl;
   }
 
 //____________________________________________
-  Future getImage_photos1() async {
-    File image_photos1;
+  Future getImagePhotos1() async {
+    File imagePhotos1;
 
-    image_photos1 = await ImagePicker.pickImage(source: ImageSource.gallery);
+    imagePhotos1 = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _imageFile_photos1 = image_photos1;
+      imageFilePhotos1 = imagePhotos1;
     });
   }
 
-  Future uploadImage_photos1() async {
-    StorageUploadTask uploadTask_photos1 =
-        _reference_photos1.putFile(_imageFile_photos1);
+  Future uploadImagePhotos1() async {
+    StorageUploadTask uploadTaskPhotos1 =
+        referencePhotos1.putFile(imageFilePhotos1);
 
-    final StreamSubscription<StorageTaskEvent> streamSubscription_photos1 =
-        uploadTask_photos1.events.listen((event) {
+    final StreamSubscription<StorageTaskEvent> streamSubscriptionPhotos1 =
+        uploadTaskPhotos1.events.listen((event) {
       //print('EVENT ${event.type}');
       setState(() {
         loading = true;
@@ -139,34 +139,34 @@ class _NoticiasCadState extends State<NoticiasCad> {
       });
     });
 
-    await uploadTask_photos1.onComplete;
+    await uploadTaskPhotos1.onComplete;
 
-    streamSubscription_photos1.cancel();
+    streamSubscriptionPhotos1.cancel();
 
-    var downloadUrl_photos1 = await _reference_photos1.getDownloadURL();
+    var downloadUrlPhotos1 = await referencePhotos1.getDownloadURL();
 
-    return downloadUrl_photos1;
+    return downloadUrlPhotos1;
   }
 
 //____________________________________________
 
 //____________________________________________
-  Future getImage_photos2() async {
-    File image_photos2;
+  Future getImagePhotos2() async {
+    File imagePhotos2;
 
-    image_photos2 = await ImagePicker.pickImage(source: ImageSource.gallery);
+    imagePhotos2 = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _imageFile_photos2 = image_photos2;
+      imageFilePhotos2 = imagePhotos2;
     });
   }
 
-  Future uploadImage_photos2() async {
-    StorageUploadTask uploadTask_photos2 =
-        _reference_photos2.putFile(_imageFile_photos2);
+  Future uploadImagePhotos2() async {
+    StorageUploadTask uploadTaskPhotos2 =
+        referencePhotos2.putFile(imageFilePhotos2);
 
-    final StreamSubscription<StorageTaskEvent> streamSubscription_photos2 =
-        uploadTask_photos2.events.listen((event) {
+    final StreamSubscription<StorageTaskEvent> streamSubscriptionPhotos2 =
+        uploadTaskPhotos2.events.listen((event) {
       //print('EVENT ${event.type}');
       // setState(() {
       //   loading = true;
@@ -177,34 +177,34 @@ class _NoticiasCadState extends State<NoticiasCad> {
       // });
     });
 
-    await uploadTask_photos2.onComplete;
+    await uploadTaskPhotos2.onComplete;
 
-    streamSubscription_photos2.cancel();
+    streamSubscriptionPhotos2.cancel();
 
-    var downloadUrl_photos2 = await _reference_photos2.getDownloadURL();
+    var downloadUrlPhotos2 = await referencePhotos2.getDownloadURL();
 
-    return downloadUrl_photos2;
+    return downloadUrlPhotos2;
   }
 
 //____________________________________________
 
 //____________________________________________
-  Future getImage_photos3() async {
-    File image_photos3;
+  Future getImagePhotos3() async {
+    File imagePhotos3;
 
-    image_photos3 = await ImagePicker.pickImage(source: ImageSource.gallery);
+    imagePhotos3 = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _imageFile_photos3 = image_photos3;
+      imageFilePhotos3 = imagePhotos3;
     });
   }
 
-  Future uploadImage_photos3() async {
-    StorageUploadTask uploadTask_photos3 =
-        _reference_photos3.putFile(_imageFile_photos3);
+  Future uploadImagePhotos3() async {
+    StorageUploadTask uploadTaskPhotos3 =
+        referencePhotos3.putFile(imageFilePhotos3);
 
-    final StreamSubscription<StorageTaskEvent> streamSubscription_photos3 =
-        uploadTask_photos3.events.listen((event) {
+    final StreamSubscription<StorageTaskEvent> streamSubscriptionPhotos3 =
+        uploadTaskPhotos3.events.listen((event) {
       //print('EVENT ${event.type}');
       // setState(() {
       //   loading = true;
@@ -215,34 +215,34 @@ class _NoticiasCadState extends State<NoticiasCad> {
       // });
     });
 
-    await uploadTask_photos3.onComplete;
+    await uploadTaskPhotos3.onComplete;
 
-    streamSubscription_photos3.cancel();
+    streamSubscriptionPhotos3.cancel();
 
-    var downloadUrl_photos3 = await _reference_photos3.getDownloadURL();
+    var downloadUrlPhotos3 = await referencePhotos3.getDownloadURL();
 
-    return downloadUrl_photos3;
+    return downloadUrlPhotos3;
   }
 
 //____________________________________________
 
 //____________________________________________
-  Future getImage_photos4() async {
-    File image_photos4;
+  Future getImagePhotos4() async {
+    File imagePhotos4;
 
-    image_photos4 = await ImagePicker.pickImage(source: ImageSource.gallery);
+    imagePhotos4 = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _imageFile_photos4 = image_photos4;
+      imageFilePhotos4 = imagePhotos4;
     });
   }
 
-  Future uploadImage_photos4() async {
-    StorageUploadTask uploadTask_photos4 =
-        _reference_photos4.putFile(_imageFile_photos4);
+  Future uploadImagePhotos4() async {
+    StorageUploadTask uploadTaskPhotos4 =
+        referencePhotos4.putFile(imageFilePhotos4);
 
-    final StreamSubscription<StorageTaskEvent> streamSubscription_photos4 =
-        uploadTask_photos4.events.listen((event) {
+    final StreamSubscription<StorageTaskEvent> streamSubscriptionPhotos4 =
+        uploadTaskPhotos4.events.listen((event) {
       //print('EVENT ${event.type}');
       // setState(() {
       //   loading = true;
@@ -253,13 +253,13 @@ class _NoticiasCadState extends State<NoticiasCad> {
       // });
     });
 
-    await uploadTask_photos4.onComplete;
+    await uploadTaskPhotos4.onComplete;
 
-    streamSubscription_photos4.cancel();
+    streamSubscriptionPhotos4.cancel();
 
-    var downloadUrl_photos4 = await _reference_photos4.getDownloadURL();
+    var downloadUrlPhotos4 = await referencePhotos4.getDownloadURL();
 
-    return downloadUrl_photos4;
+    return downloadUrlPhotos4;
   }
 
 //____________________________________________
@@ -516,10 +516,10 @@ class _NoticiasCadState extends State<NoticiasCad> {
             )),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: _imageFile == null
+          child: imageFile == null
               ? Container()
               : Image.file(
-                  _imageFile,
+                  imageFile,
                   height: 200.0,
                   width: 200.0,
                 ),
@@ -531,7 +531,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   BotaoUploadImg textFormImg_photos1() {
     return BotaoUploadImg(
       corBotao: corFundoDark,
-      funcao: getImage_photos1,
+      funcao: getImagePhotos1,
       height: 35,
       texto: "...1",
       icone: Icons.image,
@@ -542,7 +542,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   BotaoUploadImg textFormImg_photos2() {
     return BotaoUploadImg(
       corBotao: corFundoDark,
-      funcao: getImage_photos2,
+      funcao: getImagePhotos2,
       height: 35,
       texto: "...2",
       icone: Icons.image,
@@ -553,7 +553,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   BotaoUploadImg textFormImg_photos3() {
     return BotaoUploadImg(
       corBotao: corFundoDark,
-      funcao: getImage_photos3,
+      funcao: getImagePhotos3,
       height: 35,
       texto: "...3",
       icone: Icons.image,
@@ -564,7 +564,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   BotaoUploadImg textFormImg_photos4() {
     return BotaoUploadImg(
       corBotao: corFundoDark,
-      funcao: getImage_photos4,
+      funcao: getImagePhotos4,
       height: 35,
       texto: "...4",
       icone: Icons.image,
@@ -578,6 +578,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
       backgroundColor: corFundo,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
               Padding(
@@ -615,27 +616,27 @@ class _NoticiasCadState extends State<NoticiasCad> {
                               Column(
                                 children: <Widget>[
                                   textFormImg_photos1(),
-                                  _imageFile_photos1 == null
+                                  imageFilePhotos1 == null
                                       ? Container(
                                           height: 100,
                                           width: 100,
                                         )
                                       : Image.file(
-                                          _imageFile_photos1,
+                                          imageFilePhotos1,
                                           height: 100.0,
                                           width: 100.0,
                                         ),
-                                  _imageFile_photos1 != null
+                                  imageFilePhotos1 != null
                                       ? Column(
                                           children: <Widget>[
                                             textFormImg_photos2(),
-                                            _imageFile_photos2 == null
+                                            imageFilePhotos2 == null
                                                 ? Container(
                                                     height: 100,
                                                     width: 100,
                                                   )
                                                 : Image.file(
-                                                    _imageFile_photos2,
+                                                    imageFilePhotos2,
                                                     height: 100.0,
                                                     width: 100.0,
                                                   ),
@@ -652,17 +653,17 @@ class _NoticiasCadState extends State<NoticiasCad> {
                               ),
                               Column(
                                 children: <Widget>[
-                                  _imageFile_photos2 != null
+                                  imageFilePhotos2 != null
                                       ? Column(
                                           children: <Widget>[
                                             textFormImg_photos3(),
-                                            _imageFile_photos3 == null
+                                            imageFilePhotos3 == null
                                                 ? Container(
                                                     height: 100,
                                                     width: 100,
                                                   )
                                                 : Image.file(
-                                                    _imageFile_photos3,
+                                                    imageFilePhotos3,
                                                     height: 100.0,
                                                     width: 100.0,
                                                   ),
@@ -672,17 +673,17 @@ class _NoticiasCadState extends State<NoticiasCad> {
                                           height: 100,
                                           width: 100,
                                         ),
-                                  _imageFile_photos3 != null
+                                  imageFilePhotos3 != null
                                       ? Column(
                                           children: <Widget>[
                                             textFormImg_photos4(),
-                                            _imageFile_photos4 == null
+                                            imageFilePhotos4 == null
                                                 ? Container(
                                                     height: 100,
                                                     width: 100,
                                                   )
                                                 : Image.file(
-                                                    _imageFile_photos4,
+                                                    imageFilePhotos4,
                                                     height: 100.0,
                                                     width: 100.0,
                                                   ),
@@ -736,21 +737,21 @@ class _NoticiasCadState extends State<NoticiasCad> {
 
       downloadUrl = await uploadImage();
 
-      _imageFile_photos1 == null
-          ? downloadUrl_photos1 = "null"
-          : downloadUrl_photos1 = await uploadImage_photos1();
+      imageFilePhotos1 == null
+          ? downloadUrlPhotos1 = "null"
+          : downloadUrlPhotos1 = await uploadImagePhotos1();
 
-      _imageFile_photos2 == null
-          ? downloadUrl_photos2 = "null"
-          : downloadUrl_photos2 = await uploadImage_photos2();
+      imageFilePhotos2 == null
+          ? downloadUrlPhotos2 = "null"
+          : downloadUrlPhotos2 = await uploadImagePhotos2();
 
-      _imageFile_photos3 == null
-          ? downloadUrl_photos3 = "null"
-          : downloadUrl_photos3 = await uploadImage_photos3();
+      imageFilePhotos3 == null
+          ? downloadUrlPhotos3 = "null"
+          : downloadUrlPhotos3 = await uploadImagePhotos3();
 
-      _imageFile_photos4 == null
-          ? downloadUrl_photos4 = "null"
-          : downloadUrl_photos4 = await uploadImage_photos4();
+      imageFilePhotos4 == null
+          ? downloadUrlPhotos4 = "null"
+          : downloadUrlPhotos4 = await uploadImagePhotos4();
 
       DocumentReference ref = await db.collection('noticias').add({
         'titulo': '$titulo',
@@ -761,10 +762,10 @@ class _NoticiasCadState extends State<NoticiasCad> {
         'categoria': '$categoria',
         'link': '$link',
         'image': downloadUrl.toString(),
-        'photos1': downloadUrl_photos1.toString(),
-        'photos2': downloadUrl_photos2.toString(),
-        'photos3': downloadUrl_photos3.toString(),
-        'photos4': downloadUrl_photos4.toString(),
+        'photos1': downloadUrlPhotos1.toString(),
+        'photos2': downloadUrlPhotos2.toString(),
+        'photos3': downloadUrlPhotos3.toString(),
+        'photos4': downloadUrlPhotos4.toString(),
       });
 
       setState(() => id = ref.documentID);

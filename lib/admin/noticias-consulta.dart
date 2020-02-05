@@ -4,13 +4,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:path/path.dart' as Path;
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:teste2/admin/noticiasCad.dart';
+import 'package:teste2/admin/noticias-cadastro.dart';
 import 'package:teste2/style/style.dart';
 import 'package:date_format/date_format.dart';
 
@@ -33,66 +32,8 @@ class NoticiasConsultaState extends State<NoticiasConsulta> {
   DocumentSnapshot _currentDocument;
 
   String id;
-  String titulo;
-  String noticia;
-  String fonte;
-  String local;
-  String categoria;
-  String link;
-  DateTime data;
-  File _imageFile;
-  StorageUploadTask uploadTask;
-  String downloadUrl;
-  bool loading = false;
-  double _porcentagem;
-
-  TextEditingController controllerTitulo = TextEditingController();
   TextEditingController controllerUpdateTitulo = TextEditingController();
-  TextEditingController controllerNoticia = TextEditingController();
   TextEditingController controllerUpdateNoticia = TextEditingController();
-  TextEditingController controllerData = TextEditingController();
-  TextEditingController controllerFonte = TextEditingController();
-  TextEditingController controllerLocal = TextEditingController();
-  TextEditingController controllerCategoria = TextEditingController();
-  TextEditingController controllerLink = TextEditingController();
-  TextEditingController controllerImg = TextEditingController();
-
-  StorageReference _reference = FirebaseStorage.instance.ref().child(
-      'noticiasImagens/${Path.basename(DateTime.now().toString() + '.jpg')}');
-
-  Future getImage() async {
-    File image;
-
-    image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _imageFile = image;
-    });
-  }
-
-  Future uploadImage() async {
-    StorageUploadTask uploadTask = _reference.putFile(_imageFile);
-
-    final StreamSubscription<StorageTaskEvent> streamSubscription =
-        uploadTask.events.listen((event) {
-      //print('EVENT ${event.type}');
-      setState(() {
-        loading = true;
-        _porcentagem = event.snapshot.bytesTransferred.toDouble() /
-            event.snapshot.totalByteCount.toDouble();
-
-        //print(_porcentagem);
-      });
-    });
-
-    await uploadTask.onComplete;
-
-    streamSubscription.cancel();
-
-    var downloadUrl = await _reference.getDownloadURL();
-
-    return downloadUrl;
-  }
 
   Slidable buildNoticias(DocumentSnapshot doc) {
     return Slidable(
@@ -267,6 +208,7 @@ class NoticiasConsultaState extends State<NoticiasConsulta> {
       backgroundColor: corFundo,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
