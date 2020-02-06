@@ -94,8 +94,14 @@ TextStyle tituloPrincipal2 = TextStyle(
   fontSize: 40,
 );
 
+TextStyle tituloPrincipal2white = TextStyle(
+  fontFamily: heavy,
+  color: corFundoLight,
+  fontSize: 40,
+);
+
 TextStyle subTitulo = TextStyle(
-  fontFamily: bold,
+  fontFamily: heavy,
   color: corFundoDark,
   fontSize: 35,
 );

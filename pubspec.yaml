@@ -30,6 +30,7 @@ dependencies:
   line_awesome_icons: ^1.0.4+2
   flushbar: ^1.9.1
   splashscreen: ^1.2.0
+  flutter_svg: ^0.17.1
 
 
 dev_dependencies:
@@ -48,7 +49,7 @@ flutter:
     - lib/style/images/gastronomia.jpg
     - lib/style/images/sobre.png
     - lib/style/images/logo.png
-    - lib/style/images/noticias-categorias/todas-noticias.png
+    - lib/style/images/noticias-categorias/todas-noticias.svg
     - lib/style/images/erro/nenhuma-noticia.png
     - lib/style/images/erro/acesso-negado.png
     - lib/style/dark-map.json

@@ -8,6 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:date_format/date_format.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Noticias extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class Noticias extends StatefulWidget {
 
 class _NoticiasState extends State<Noticias> {
   Firestore db = Firestore.instance;
+  final String todasNoticias =
+      'lib/style/images/noticias-categorias/todas-noticias.svg';
 
   List<DocumentSnapshot> noticias = [];
 
@@ -89,18 +92,31 @@ class _NoticiasState extends State<Noticias> {
       body: Column(children: [
         Stack(
           children: <Widget>[
-            Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width,
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(14),
-                    bottomRight: Radius.circular(14)),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                      'lib/style/images/noticias-categorias/todas-noticias.png'),
+            Material(
+              color: Colors.transparent,
+              shadowColor: corPrincipal2,
+              elevation: 3,
+              borderRadius: BorderRadius.circular(14),
+              child: Container(
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(14),
+                      bottomRight: Radius.circular(14)),
+                  child: SvgPicture.asset(
+                    todasNoticias,
+                    fit: BoxFit.cover,
+                  ),
                 ),
+              ),
+            ),
+            Positioned(
+              left: 15,
+              bottom: 5,
+              child: Text(
+                "Notícias",
+                style: tituloPrincipal2white,
               ),
             ),
           ],
@@ -117,7 +133,6 @@ class _NoticiasState extends State<Noticias> {
                     itemCount: noticias.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        //color: Colors.blue,
                         child: Stack(
                           children: <Widget>[
                             Padding(
