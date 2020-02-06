@@ -50,7 +50,6 @@ flutter:
     - lib/style/images/sobre.png
     - lib/style/images/logo.png
     - lib/style/images/noticias-categorias/todas-noticias.svg
-    - lib/style/images/erro/nenhuma-noticia.png
     - lib/style/images/erro/acesso-negado.png
     - lib/style/dark-map.json
     - lib/style/images/emBreve.png
