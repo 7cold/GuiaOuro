@@ -10,6 +10,7 @@ import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-efeito-rota.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 const localeList = [
   'en',
@@ -136,23 +137,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('pt', 'BR'),
-      ],
-      title: 'GuiaOuro',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: white,
-        brightness: Brightness.light,
-      ),
-      home: Home(),
-    );
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('pt', 'BR'),
+        ],
+        title: 'GuiaOuro',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          accentColor: white,
+          brightness: Brightness.light,
+        ),
+        home: SplashScreen());
   }
 }
 
@@ -196,7 +196,7 @@ class Home extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   "Seu guia em",
-                                  style: subTituloMain2,
+                                  style: subTituloMain1,
                                 ),
                                 Text(
                                   "Ouro Fino",
@@ -308,6 +308,69 @@ class _Feed extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(seconds: 4), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: corSplashScreen,
+      body: Stack(
+        children: <Widget>[
+          FlareActor(
+            "lib/style/splash.flr",
+            animation: "Flow",
+            fit: BoxFit.cover,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    "lib/style/images/logo.png",
+                    scale: 14,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          // Positioned(
+          //   top: 20,
+          //   child: SizedBox(
+          //     height: 150,
+          //     child: FlareActor(
+          //       "lib/style/load.flr",
+          //       animation: "Loading",
+          //       fit: BoxFit.contain,
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
   }

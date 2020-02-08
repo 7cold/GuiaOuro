@@ -29,8 +29,8 @@ dependencies:
   transparent_image: ^1.0.0
   line_awesome_icons: ^1.0.4+2
   flushbar: ^1.9.1
-  splashscreen: ^1.2.0
   flutter_svg: ^0.17.1
+  flare_flutter: ^2.0.1
 
 
 dev_dependencies:
@@ -53,6 +53,8 @@ flutter:
     - lib/style/images/erro/acesso-negado.png
     - lib/style/dark-map.json
     - lib/style/images/emBreve.png
+    - lib/style/splash.flr
+    - lib/style/load.flr
 
 
   fonts:

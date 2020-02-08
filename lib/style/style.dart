@@ -45,6 +45,13 @@ const MaterialColor corPrincipal2 = const MaterialColor(
   },
 );
 
+const MaterialColor corSplashScreen = const MaterialColor(
+  0xFFddeafe,
+  const <int, Color>{
+    50: const Color(0xFFFFFFFF),
+  },
+);
+
 const MaterialColor corSecundaria = const MaterialColor(
   0xFF1F4A77,
   const <int, Color>{
@@ -112,10 +119,16 @@ TextStyle subTitulo2 = TextStyle(
   fontSize: 25,
 );
 
+TextStyle subTituloMain1 = TextStyle(
+  fontFamily: semi,
+  color: corSecundaria,
+  fontSize: 25,
+);
+
 TextStyle subTituloMain2 = TextStyle(
   fontFamily: heavy,
   color: corSecundaria,
-  fontSize: 25,
+  fontSize: 28,
 );
 
 TextStyle subTitulo3 = TextStyle(
