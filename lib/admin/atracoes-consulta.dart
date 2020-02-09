@@ -89,7 +89,7 @@ class _AtracoesConsultaState extends State<AtracoesConsulta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: corFundoLight,
+      backgroundColor: corFundo,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -321,6 +321,7 @@ class _EventosAtracoesState extends State<EventosAtracoes> {
                           .collection('atracoes')
                           .document(idAtracao)
                           .collection('eventos')
+                          .orderBy('data', descending: true)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {

@@ -155,6 +155,18 @@ TextStyle subTitulo4white = TextStyle(
   fontSize: 20,
 );
 
+TextStyle subTitulo5white = TextStyle(
+  fontFamily: bold,
+  color: corFundoLight,
+  fontSize: 20,
+);
+
+TextStyle subTitulo5whiteReg = TextStyle(
+  fontFamily: reg,
+  color: corFundoLight,
+  fontSize: 18,
+);
+
 TextStyle textoPagina = TextStyle(
   fontFamily: textoReg,
   color: Colors.black45,

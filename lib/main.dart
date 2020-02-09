@@ -1,3 +1,7 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -11,6 +15,8 @@ import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-efeito-rota.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 import 'package:flare_flutter/flare_actor.dart';
+
+final db = Firestore.instance;
 
 const localeList = [
   'en',
@@ -142,9 +148,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [
-          const Locale('pt', 'BR'),
-        ],
+        // supportedLocales: [
+        //   const Locale('pt', 'BR'),
+        // ],
         title: 'GuiaOuro',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -156,7 +162,98 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  double heightContainer = 0;
+  bool abrirMenu = false;
+  DateTime dataAtual = DateTime.now();
+
+  animatedProximoEvento() {
+    setState(() {
+      heightContainer = 90;
+      abrirMenu = true;
+    });
+  }
+
+  animatedProximoEventoFechar() {
+    setState(() {
+      heightContainer = 0;
+      abrirMenu = false;
+    });
+  }
+
+  Padding buildItem(DocumentSnapshot doc, BuildContext context) {
+    // var dataEventoBanco = (formatDate(doc.data['data'].toDate(), [
+    //   d,
+    //   '/',
+    //   m,
+    //   '/',
+    //   yyyy,
+    // ]));
+
+    // var dataAtualFormatada = "${dataAtual.day}" +
+    //     '/' +
+    //     "${dataAtual.month}" +
+    //     '/' +
+    //     "${dataAtual.year}";
+
+    var dataAtualTimestamp = Timestamp.now().microsecondsSinceEpoch;
+    var dataEventoBancoTimestamp = doc.data['data'].microsecondsSinceEpoch;
+
+    return Padding(
+      padding: EdgeInsets.only(right: 30, left: 30, bottom: 4),
+      child: Column(
+        children: <Widget>[
+          // RaisedButton(onPressed: () {
+          //   print(dataAtualTimestamp);
+          //   print(dataEventoBancoTimestamp);
+          // }),
+          dataEventoBancoTimestamp >= dataAtualTimestamp
+              ? AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  width: MediaQuery.of(context).size.width,
+                  height: heightContainer,
+                  decoration: BoxDecoration(
+                      color: corPrincipal2,
+                      borderRadius: BorderRadius.circular(7)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "${doc.data['evento']}",
+                          style: subTitulo5white,
+                        ),
+                        Text(
+                          '${formatDate(doc.data['data'].toDate(), [
+                            dd,
+                            '/',
+                            mm,
+                            '/',
+                            yyyy,
+                          ])}',
+                          style: subTitulo5whiteReg,
+                        ),
+                        Text(
+                          "${doc.data['atracao']}",
+                          style: subTitulo5white,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox()
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,7 +273,7 @@ class Home extends StatelessWidget {
                 ),
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(bottom: 40),
+                    padding: EdgeInsets.only(bottom: 20),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Row(
@@ -219,6 +316,89 @@ class Home extends StatelessWidget {
                     foto: 'lib/style/images/atracoes.jpg',
                     pagina: Atracoes(),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, left: 30, right: 30),
+                    child: AnimatedContainer(
+                      duration: Duration(microseconds: 300),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: corPrincipal2.withOpacity(0.4),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(7),
+                          topLeft: Radius.circular(7),
+                          bottomLeft: Radius.circular(7),
+                          bottomRight: Radius.circular(7),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, bottom: 5, top: 5),
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              "Eventos Futuros",
+                              style: subTitulo4white,
+                            ),
+                            abrirMenu == false
+                                ? Positioned(
+                                    right: 10,
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(50),
+                                        highlightColor: Colors.transparent,
+                                        focusColor: Colors.blue,
+                                        splashColor:
+                                            Colors.white.withOpacity(0.2),
+                                        onTap: () {
+                                          animatedProximoEvento();
+                                        },
+                                        child: Icon(
+                                          LineAwesomeIcons.angle_down,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Positioned(
+                                    right: 10,
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(50),
+                                        highlightColor: Colors.transparent,
+                                        focusColor: Colors.blue,
+                                        splashColor:
+                                            Colors.white.withOpacity(0.2),
+                                        onTap: () {
+                                          animatedProximoEventoFechar();
+                                        },
+                                        child: Icon(
+                                          LineAwesomeIcons.angle_up,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  StreamBuilder<QuerySnapshot>(
+                    stream:
+                        db.collection("proximosEventos").limit(2).snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: snapshot.data.documents
+                              .map((doc) => buildItem(doc, context))
+                              .toList(),
+                        );
+                      } else {
+                        return Text("");
+                      }
+                    },
+                  ),
                   _Feed(
                       text: "Gastronomia",
                       foto: 'lib/style/images/gastronomia.jpg',
@@ -260,7 +440,7 @@ class _Feed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20, left: 30, right: 30),
+      padding: EdgeInsets.only(left: 30, right: 30, top: 20),
       child: Material(
         elevation: 5,
         shadowColor: corPrincipal2.withOpacity(0.5),
@@ -291,10 +471,7 @@ class _Feed extends StatelessWidget {
                   right: 0,
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(7),
-                          bottomRight: Radius.circular(7),
-                        ),
+                        borderRadius: BorderRadius.circular(7),
                         color: Colors.white.withOpacity(0.6)),
                     height: 40,
                   ),
@@ -338,6 +515,11 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: corSplashScreen,
       body: Stack(
         children: <Widget>[
+          FlareActor(
+            "lib/style/splash.flr",
+            animation: "Flow",
+            fit: BoxFit.cover,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -353,11 +535,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ],
-          ),
-          FlareActor(
-            "lib/style/splash.flr",
-            animation: "Flow",
-            fit: BoxFit.cover,
           ),
           // Positioned(
           //   top: 20,

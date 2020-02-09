@@ -176,8 +176,18 @@ class _AtracoesCadState extends State<AtracoesCad> {
         'data': Timestamp.fromDate(data),
       });
 
+      DocumentReference ref2 = await db.collection('proximosEventos').add({
+        'evento': '$evento',
+        'atracao': atracao,
+        'descricao': controllerDescricao.text,
+        'data': Timestamp.fromDate(data),
+      });
+
       setState(() => idEvento = ref.documentID);
+      setState(() => idEvento = ref2.documentID);
+
       print("Cadastrado com sucesso!");
+      print(atracao);
       Navigator.pop(context);
       Flushbar(
         margin: EdgeInsets.all(20),
