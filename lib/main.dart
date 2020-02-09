@@ -338,11 +338,6 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: corSplashScreen,
       body: Stack(
         children: <Widget>[
-          FlareActor(
-            "lib/style/splash.flr",
-            animation: "Flow",
-            fit: BoxFit.cover,
-          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -358,6 +353,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ],
+          ),
+          FlareActor(
+            "lib/style/splash.flr",
+            animation: "Flow",
+            fit: BoxFit.cover,
           ),
           // Positioned(
           //   top: 20,

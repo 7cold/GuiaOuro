@@ -54,7 +54,6 @@ flutter:
     - lib/style/dark-map.json
     - lib/style/images/emBreve.png
     - lib/style/splash.flr
-    - lib/style/load.flr
 
 
   fonts:
