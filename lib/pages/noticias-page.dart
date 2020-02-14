@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/style/style.dart';
@@ -9,6 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:date_format/date_format.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+BannerAd myBanner;
 
 class Noticias extends StatefulWidget {
   @override
@@ -308,7 +311,7 @@ class _NoticiasState extends State<Noticias> {
   }
 }
 
-class NoticiasDetalhes extends StatelessWidget {
+class NoticiasDetalhes extends StatefulWidget {
   final String titulo;
   final String image;
   final String photos1;
@@ -341,7 +344,50 @@ class NoticiasDetalhes extends StatelessWidget {
       : super(key: key);
 
   @override
+  _NoticiasDetalhesState createState() => _NoticiasDetalhesState();
+}
+
+class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
+  MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    keywords: <String>['games', 'pubg'],
+    contentUrl: 'https://flutter.io',
+    childDirected: false,
+    testDevices: <String>[],
+  );
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+        adUnitId: "ca-app-pub-6292126127383705/2058165781",
+        //Change BannerAd adUnitId with Admob ID
+        size: AdSize.smartBanner,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+        });
+  }
+
+  @override
+  void initState() {
+    FirebaseAdMob.instance
+        .initialize(appId: "ca-app-pub-6292126127383705~4656408966");
+    //Change appId With Admob Id
+    myBanner = createBannerAd()
+      ..load()
+      ..show();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    myBanner.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // myBanner
+    //   ..load()
+    //   ..show();
     return Scaffold(
       backgroundColor: corFundo,
       body: Container(
@@ -359,13 +405,13 @@ class NoticiasDetalhes extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => _PhotoViewNoticiaDetalhes(
-                          image: image,
+                          image: widget.image,
                         ),
                       ),
                     );
                   },
                   child: Image.network(
-                    image,
+                    widget.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -382,11 +428,11 @@ class NoticiasDetalhes extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Hero(
-                              tag: id.toString(),
+                              tag: widget.id.toString(),
                               child: Material(
                                 color: Colors.transparent,
                                 child: Text(
-                                  titulo,
+                                  widget.titulo,
                                   style: tituloCard,
                                 ),
                               ),
@@ -413,7 +459,7 @@ class NoticiasDetalhes extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 10, bottom: 20),
                           child: Hero(
-                            tag: (id * 2).toString(),
+                            tag: (widget.id * 2).toString(),
                             child: Material(
                               color: Colors.transparent,
                               child: Row(
@@ -423,7 +469,7 @@ class NoticiasDetalhes extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(top: 5),
                                     child: Text(
-                                      " " + data,
+                                      " " + widget.data,
                                       style: fonteData2,
                                     ),
                                   ),
@@ -437,7 +483,7 @@ class NoticiasDetalhes extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            noticia,
+                            widget.noticia,
                             style: textoPagina,
                             textAlign: TextAlign.justify,
                           ),
@@ -466,7 +512,7 @@ class NoticiasDetalhes extends StatelessWidget {
                                 backgroundColor: corPrincipal2,
                                 labelStyle: textoPagina,
                                 label: Text(
-                                  local.toUpperCase(),
+                                  widget.local.toUpperCase(),
                                   style: fonteTag,
                                 ),
                               ),
@@ -478,7 +524,7 @@ class NoticiasDetalhes extends StatelessWidget {
                                 backgroundColor: corSecundaria,
                                 labelStyle: textoPagina,
                                 label: Text(
-                                  categoria.toUpperCase(),
+                                  widget.categoria.toUpperCase(),
                                   style: fonteTag,
                                 ),
                               ),
@@ -492,7 +538,7 @@ class NoticiasDetalhes extends StatelessWidget {
                         ),
                         Padding(
                           padding:
-                              EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                              EdgeInsets.only(left: 10, right: 10, bottom: 90),
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
@@ -503,20 +549,23 @@ class NoticiasDetalhes extends StatelessWidget {
                               children: <Widget>[
                                 //fonte
                                 Padding(
-                                  padding: EdgeInsets.only(top: 15, left: 15),
-                                  child: Text(fonte, style: subTitulo3),
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    left: 15,
+                                  ),
+                                  child: Text(widget.fonte, style: subTitulo3),
                                 ),
                                 //link
                                 InkWell(
                                   onTap: () async {
-                                    if (await canLaunch(link)) {
-                                      await launch(link);
+                                    if (await canLaunch(widget.link)) {
+                                      await launch(widget.link);
                                     }
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                         left: 15, bottom: 10, right: 15),
-                                    child: Text(link, style: fonteLink),
+                                    child: Text(widget.link, style: fonteLink),
                                   ),
                                 ),
                               ],
@@ -543,7 +592,7 @@ class NoticiasDetalhes extends StatelessWidget {
           padding: EdgeInsets.only(left: 5),
           child: Column(
             children: <Widget>[
-              photos1 != "null"
+              widget.photos1 != "null"
                   ? Material(
                       child: InkWell(
                         onTap: () {
@@ -551,7 +600,7 @@ class NoticiasDetalhes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => _PhotoViewNoticiaDetalhes(
-                                image: photos1,
+                                image: widget.photos1,
                               ),
                             ),
                           );
@@ -562,7 +611,7 @@ class NoticiasDetalhes extends StatelessWidget {
                           child: ClipRRect(
                             child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image: "$photos1",
+                              image: "${widget.photos1}",
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -571,7 +620,7 @@ class NoticiasDetalhes extends StatelessWidget {
                     )
                   : SizedBox(),
               Padding(padding: EdgeInsets.only(top: 5)),
-              photos2 != "null"
+              widget.photos2 != "null"
                   ? Material(
                       child: InkWell(
                         onTap: () {
@@ -579,7 +628,7 @@ class NoticiasDetalhes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => _PhotoViewNoticiaDetalhes(
-                                image: photos2,
+                                image: widget.photos2,
                               ),
                             ),
                           );
@@ -590,7 +639,7 @@ class NoticiasDetalhes extends StatelessWidget {
                           child: ClipRRect(
                             child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image: "$photos2",
+                              image: "${widget.photos2}",
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -605,7 +654,7 @@ class NoticiasDetalhes extends StatelessWidget {
           padding: EdgeInsets.only(left: 5),
           child: Column(
             children: <Widget>[
-              photos3 != "null"
+              widget.photos3 != "null"
                   ? Material(
                       child: InkWell(
                         onTap: () {
@@ -613,7 +662,7 @@ class NoticiasDetalhes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => _PhotoViewNoticiaDetalhes(
-                                image: photos3,
+                                image: widget.photos3,
                               ),
                             ),
                           );
@@ -624,7 +673,7 @@ class NoticiasDetalhes extends StatelessWidget {
                           child: ClipRRect(
                             child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image: "$photos3",
+                              image: "${widget.photos3}",
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -633,7 +682,7 @@ class NoticiasDetalhes extends StatelessWidget {
                     )
                   : SizedBox(),
               Padding(padding: EdgeInsets.only(top: 5)),
-              photos4 != "null"
+              widget.photos4 != "null"
                   ? Material(
                       child: InkWell(
                         onTap: () {
@@ -641,7 +690,7 @@ class NoticiasDetalhes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => _PhotoViewNoticiaDetalhes(
-                                image: photos4,
+                                image: widget.photos4,
                               ),
                             ),
                           );
@@ -652,7 +701,7 @@ class NoticiasDetalhes extends StatelessWidget {
                           child: ClipRRect(
                             child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image: "$photos4",
+                              image: "${widget.photos4}",
                               fit: BoxFit.cover,
                             ),
                           ),

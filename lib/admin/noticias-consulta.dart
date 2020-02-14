@@ -1,13 +1,8 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:path/path.dart' as Path;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:teste2/admin/noticias-cadastro.dart';
 import 'package:teste2/style/style.dart';

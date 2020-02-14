@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +203,7 @@ class _HomeState extends State<Home> {
     var dataEventoBancoTimestamp = doc.data['data'].microsecondsSinceEpoch;
 
     return Padding(
-      padding: EdgeInsets.only(right: 30, left: 30, bottom: 4),
+      padding: EdgeInsets.only(right: 30, left: 30, bottom: 0),
       child: Column(
         children: <Widget>[
           // RaisedButton(onPressed: () {
@@ -218,7 +216,7 @@ class _HomeState extends State<Home> {
                   width: MediaQuery.of(context).size.width,
                   height: heightContainer,
                   decoration: BoxDecoration(
-                      color: corPrincipal2,
+                      color: corPrincipal2.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(7)),
                   child: Padding(
                     padding: const EdgeInsets.all(9.0),
@@ -228,7 +226,7 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         Text(
                           "${doc.data['evento']}",
-                          style: subTitulo5white,
+                          style: subTitulo3white,
                         ),
                         Text(
                           '${formatDate(doc.data['data'].toDate(), [
@@ -242,7 +240,7 @@ class _HomeState extends State<Home> {
                         ),
                         Text(
                           "${doc.data['atracao']}",
-                          style: subTitulo5white,
+                          style: subTitulo5whiteReg,
                         ),
                       ],
                     ),
@@ -317,69 +315,83 @@ class _HomeState extends State<Home> {
                     pagina: Atracoes(),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10, left: 30, right: 30),
-                    child: AnimatedContainer(
-                      duration: Duration(microseconds: 300),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: corPrincipal2.withOpacity(0.4),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(7),
-                          topLeft: Radius.circular(7),
-                          bottomLeft: Radius.circular(7),
-                          bottomRight: Radius.circular(7),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10, bottom: 5, top: 5),
-                        child: Stack(
-                          children: <Widget>[
-                            Text(
-                              "Eventos Futuros",
-                              style: subTitulo4white,
+                    padding: EdgeInsets.only(
+                        top: 10, left: 30, right: 30, bottom: 8),
+                    child: Material(
+                      elevation: 3,
+                      shadowColor: corPrincipal2.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(7),
+                      child: InkWell(
+                        onTap: () {
+                          animatedProximoEvento();
+                        },
+                        child: AnimatedContainer(
+                          duration: Duration(microseconds: 300),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: corPrincipal2.withOpacity(0.4),
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(7),
+                              topLeft: Radius.circular(7),
+                              bottomLeft: Radius.circular(7),
+                              bottomRight: Radius.circular(7),
                             ),
-                            abrirMenu == false
-                                ? Positioned(
-                                    right: 10,
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        borderRadius: BorderRadius.circular(50),
-                                        highlightColor: Colors.transparent,
-                                        focusColor: Colors.blue,
-                                        splashColor:
-                                            Colors.white.withOpacity(0.2),
-                                        onTap: () {
-                                          animatedProximoEvento();
-                                        },
-                                        child: Icon(
-                                          LineAwesomeIcons.angle_down,
-                                          color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(left: 10, bottom: 5, top: 5),
+                            child: Stack(
+                              children: <Widget>[
+                                Text(
+                                  "Eventos Futuros",
+                                  style: subTitulo5white,
+                                ),
+                                abrirMenu == false
+                                    ? Positioned(
+                                        right: 10,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            highlightColor: Colors.transparent,
+                                            focusColor: Colors.blue,
+                                            splashColor:
+                                                Colors.white.withOpacity(0.2),
+                                            onTap: () {
+                                              animatedProximoEvento();
+                                            },
+                                            child: Icon(
+                                              LineAwesomeIcons.angle_down,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                : Positioned(
-                                    right: 10,
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        borderRadius: BorderRadius.circular(50),
-                                        highlightColor: Colors.transparent,
-                                        focusColor: Colors.blue,
-                                        splashColor:
-                                            Colors.white.withOpacity(0.2),
-                                        onTap: () {
-                                          animatedProximoEventoFechar();
-                                        },
-                                        child: Icon(
-                                          LineAwesomeIcons.angle_up,
-                                          color: Colors.white,
+                                      )
+                                    : Positioned(
+                                        right: 10,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            highlightColor: Colors.transparent,
+                                            focusColor: Colors.blue,
+                                            splashColor:
+                                                Colors.white.withOpacity(0.2),
+                                            onTap: () {
+                                              animatedProximoEventoFechar();
+                                            },
+                                            child: Icon(
+                                              LineAwesomeIcons.angle_up,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                          ],
+                                      )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
