@@ -33,6 +33,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   String local;
   String categoria;
   String link;
+  String youtube;
   DateTime data;
   File imageFile;
   File imageFilePhotos1;
@@ -61,6 +62,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   TextEditingController controllerLocal = TextEditingController();
   TextEditingController controllerCategoria = TextEditingController();
   TextEditingController controllerLink = TextEditingController();
+  TextEditingController controllerYoutube = TextEditingController();
   TextEditingController controllerImg = TextEditingController();
 
   StorageReference reference = FirebaseStorage.instance.ref().child(
@@ -343,14 +345,70 @@ class _NoticiasCadState extends State<NoticiasCad> {
     );
   }
 
-  CampoTexto textFormFonte() {
-    return CampoTexto(
-      controller: controllerFonte,
-      variavel: fonte = controllerFonte.text,
-      hintText: "Fonte da Matéria",
-      icone: LineAwesomeIcons.search,
-      textInputAction: TextInputAction.done,
-      textCap: TextCapitalization.words,
+  // CampoTexto textFormFonte() {
+  //   return CampoTexto(
+  //     controller: controllerFonte,
+  //     variavel: fonte = controllerFonte.text,
+  //     hintText: "Fonte da Matéria",
+  //     icone: LineAwesomeIcons.search,
+  //     textInputAction: TextInputAction.done,
+  //     textCap: TextCapitalization.words,
+  //   );
+  // }
+
+  Padding textFormFonte() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
+      child: Center(
+        child: DropdownButtonFormField<String>(
+            icon: Icon(Icons.keyboard_arrow_down),
+            style: fonteCampoTexto,
+            items: [
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Observatório de Ouro Fino',
+                ),
+                value: 'Observatório de Ouro Fino',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Difusora Ouro Fino',
+                ),
+                value: 'Difusora Ouro Fino',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Jornal Folha de Ouro',
+                ),
+                value: 'Jornal Folha de Ouro',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'G1 Sul de Minas',
+                ),
+                value: 'G1 Sul de Minas',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Tonogiro',
+                ),
+                value: 'Tonogiro',
+              ),
+            ],
+            onChanged: (String value) {
+              setState(() {
+                fonte = value;
+              });
+            },
+            hint: Text('Fonte'),
+            value: fonte,
+            validator: (value) {
+              if (value == null) {
+                return 'Campo Obrigatório*';
+              }
+            },
+            onSaved: (value) => fonte = value),
+      ),
     );
   }
 
@@ -385,6 +443,30 @@ class _NoticiasCadState extends State<NoticiasCad> {
                   'Monte Sião',
                 ),
                 value: 'Monte Sião',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Borda da Mata',
+                ),
+                value: 'Borda da Mata',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Bueno Brandão',
+                ),
+                value: 'Bueno Brandão',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Andradas',
+                ),
+                value: 'Andradas',
+              ),
+              DropdownMenuItem<String>(
+                child: Text(
+                  'Pouso Alegre',
+                ),
+                value: 'Pouso Alegre',
               ),
               DropdownMenuItem<String>(
                 child: Text(
@@ -490,14 +572,23 @@ class _NoticiasCadState extends State<NoticiasCad> {
     );
   }
 
-  CampoTexto textFormLink() {
-    return CampoTexto(
+  CampoTextoNaoObrigatorio textFormLink() {
+    return CampoTextoNaoObrigatorio(
       controller: controllerLink,
       variavel: link = controllerLink.text,
       hintText: "link.com",
       icone: LineAwesomeIcons.link,
       textInputAction: TextInputAction.done,
-      prefixText: "http://",
+    );
+  }
+
+  CampoTexto textFormYoutube() {
+    return CampoTexto(
+      controller: controllerYoutube,
+      variavel: youtube = controllerLink.text,
+      hintText: "Link Video Youtube",
+      icone: LineAwesomeIcons.youtube,
+      textInputAction: TextInputAction.done,
     );
   }
 
@@ -601,6 +692,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
                       textFormCategoria(),
                       textFormFonte(),
                       textFormLink(),
+                      textFormYoutube(),
                       textFormImg(),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -761,6 +853,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
         'local': '$local',
         'categoria': '$categoria',
         'link': '$link',
+        'youtube': '$youtube',
         'image': downloadUrl.toString(),
         'photos1': downloadUrlPhotos1.toString(),
         'photos2': downloadUrlPhotos2.toString(),

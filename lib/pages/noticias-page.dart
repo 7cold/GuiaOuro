@@ -10,8 +10,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:date_format/date_format.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 BannerAd myBanner;
+Firestore db = Firestore.instance;
 
 class Noticias extends StatefulWidget {
   @override
@@ -19,7 +21,6 @@ class Noticias extends StatefulWidget {
 }
 
 class _NoticiasState extends State<Noticias> {
-  Firestore db = Firestore.instance;
   final String todasNoticias =
       'lib/style/images/noticias-categorias/todas-noticias.svg';
 
@@ -182,6 +183,8 @@ class _NoticiasState extends State<Noticias> {
                                             '/',
                                             yyyy,
                                           ])}",
+                                          youtube:
+                                              "${noticias[index].data['youtube']}",
                                         ),
                                       ),
                                     );
@@ -321,6 +324,7 @@ class NoticiasDetalhes extends StatefulWidget {
   final String noticia;
   final String fonte;
   final String link;
+  final String youtube;
   final String local;
   final String categoria;
   final String data;
@@ -340,7 +344,8 @@ class NoticiasDetalhes extends StatefulWidget {
       this.photos1,
       this.photos2,
       this.photos3,
-      this.photos4})
+      this.photos4,
+      this.youtube})
       : super(key: key);
 
   @override
@@ -374,6 +379,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
     myBanner = createBannerAd()
       ..load()
       ..show();
+
     super.initState();
   }
 
@@ -385,9 +391,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
 
   @override
   Widget build(BuildContext context) {
-    // myBanner
-    //   ..load()
-    //   ..show();
+    String videoID = YoutubePlayer.convertUrlToId(widget.youtube);
     return Scaffold(
       backgroundColor: corFundo,
       body: Container(
@@ -491,7 +495,19 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
 
                         SizedBox(height: 20),
 
-                        GaleriaPhotos(context),
+                        _GaleriaPhotos(context),
+
+                        videoID != null
+                            ? YoutubePlayer(
+                                controller: YoutubePlayerController(
+                                  initialVideoId: videoID,
+                                  flags: YoutubePlayerFlags(
+                                    autoPlay: false,
+                                  ),
+                                ),
+                                showVideoProgressIndicator: true,
+                              )
+                            : SizedBox(),
 
                         SizedBox(height: 20),
                         Padding(
@@ -574,7 +590,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -584,7 +600,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
     );
   }
 
-  Row GaleriaPhotos(BuildContext context) {
+  Row _GaleriaPhotos(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
