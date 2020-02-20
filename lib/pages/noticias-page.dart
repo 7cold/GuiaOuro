@@ -213,7 +213,7 @@ class _NoticiasState extends State<Noticias> {
                                           width: double.infinity,
                                           child: ClipRRect(
                                             borderRadius:
-                                                new BorderRadius.circular(7.0),
+                                                BorderRadius.circular(7.0),
                                             child: FadeInImage.memoryNetwork(
                                               placeholder: kTransparentImage,
                                               image:
@@ -223,17 +223,41 @@ class _NoticiasState extends State<Noticias> {
                                           ),
                                         ),
                                         Positioned(
-                                          bottom: 10,
-                                          left: 10,
-                                          right: 10,
-                                          child: Hero(
-                                            tag: "${noticias[index].documentID}"
-                                                .toString(),
-                                            child: Material(
-                                              color: Colors.transparent,
-                                              child: Text(
-                                                  "${noticias[index].data['titulo']}",
-                                                  style: card20),
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          top: 0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: Colors.black
+                                                    .withOpacity(0.25)),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                                color: white.withOpacity(0.4)),
+                                            child: Hero(
+                                              tag:
+                                                  "${noticias[index].documentID}"
+                                                      .toString(),
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Text(
+                                                      "${noticias[index].data['titulo']}",
+                                                      style: card20),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
