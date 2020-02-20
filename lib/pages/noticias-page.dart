@@ -102,7 +102,7 @@ class _NoticiasState extends State<Noticias> {
               elevation: 3,
               borderRadius: BorderRadius.circular(14),
               child: Container(
-                height: 100,
+                height: 110,
                 width: MediaQuery.of(context).size.width,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
@@ -192,7 +192,7 @@ class _NoticiasState extends State<Noticias> {
                                     print("${noticias[index].documentID}");
                                   },
                                   child: Container(
-                                    height: 220,
+                                    height: 180,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
@@ -209,7 +209,7 @@ class _NoticiasState extends State<Noticias> {
                                             borderRadius:
                                                 BorderRadius.circular(7),
                                           ),
-                                          height: 230,
+                                          height: 210,
                                           width: double.infinity,
                                           child: ClipRRect(
                                             borderRadius:
@@ -244,7 +244,7 @@ class _NoticiasState extends State<Noticias> {
                               ),
                             ),
                             Positioned(
-                              top: 235,
+                              top: 195,
                               right: 20,
                               child: Hero(
                                 tag: ("${noticias[index].documentID}" * 2)
@@ -259,11 +259,28 @@ class _NoticiasState extends State<Noticias> {
                                       Icon(LineAwesomeIcons.clock_o,
                                           size: 20.0, color: corFundoDark),
                                       Text(
-                                        " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR')}",
+                                        " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR_short')}",
                                         style: fonteData,
                                       ),
                                     ],
                                   ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 195,
+                              left: 20,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "${noticias[index].data['fonte']}",
+                                      style: fonteData,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
