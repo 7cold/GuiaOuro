@@ -136,179 +136,234 @@ class _NoticiasState extends State<Noticias> {
                     controller: _scrollController,
                     itemCount: noticias.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        child: Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 35, top: 10, left: 20, right: 20),
-                              child: Material(
-                                elevation: 5,
-                                shadowColor: corPrincipal2.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(7),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => NoticiasDetalhes(
-                                          titulo:
-                                              "${noticias[index].data['titulo']}",
-                                          image:
-                                              "${noticias[index].data['image']}",
-                                          photos1:
-                                              "${noticias[index].data['photos1']}",
-                                          photos2:
-                                              "${noticias[index].data['photos2']}",
-                                          photos3:
-                                              "${noticias[index].data['photos3']}",
-                                          photos4:
-                                              "${noticias[index].data['photos4']}",
-                                          noticia:
-                                              "${noticias[index].data['noticia']}",
-                                          fonte:
-                                              "${noticias[index].data['fonte']}",
-                                          link:
-                                              "${noticias[index].data['link']}",
-                                          local:
-                                              "${noticias[index].data['local']}",
-                                          categoria:
-                                              "${noticias[index].data['categoria']}",
-                                          id: "${noticias[index].documentID}",
-                                          data:
-                                              "${formatDate(noticias[index].data['data'].toDate(), [
-                                            dd,
-                                            '/',
-                                            mm,
-                                            '/',
-                                            yyyy,
-                                          ])}",
-                                          youtube:
-                                              "${noticias[index].data['youtube']}",
-                                        ),
-                                      ),
-                                    );
-
-                                    print("${noticias[index].documentID}");
-                                  },
-                                  child: Container(
-                                    height: 180,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Center(
-                                          child: CircularProgressIndicator(
-                                            backgroundColor: corPrincipal2,
-                                            strokeWidth: 2,
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                          ),
-                                          height: 210,
-                                          width: double.infinity,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(7.0),
-                                            child: FadeInImage.memoryNetwork(
-                                              placeholder: kTransparentImage,
+                      return Padding(
+                        padding:
+                            EdgeInsets.only(bottom: 15, left: 10, right: 10),
+                        child: Material(
+                          elevation: 5,
+                          shadowColor: corPrincipal2.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Stack(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 35, top: 10, left: 20, right: 20),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                NoticiasDetalhes(
+                                              titulo:
+                                                  "${noticias[index].data['titulo']}",
                                               image:
                                                   "${noticias[index].data['image']}",
-                                              fit: BoxFit.cover,
+                                              photos1:
+                                                  "${noticias[index].data['photos1']}",
+                                              photos2:
+                                                  "${noticias[index].data['photos2']}",
+                                              photos3:
+                                                  "${noticias[index].data['photos3']}",
+                                              photos4:
+                                                  "${noticias[index].data['photos4']}",
+                                              noticia:
+                                                  "${noticias[index].data['noticia']}",
+                                              fonte:
+                                                  "${noticias[index].data['fonte']}",
+                                              link:
+                                                  "${noticias[index].data['link']}",
+                                              local:
+                                                  "${noticias[index].data['local']}",
+                                              categoria:
+                                                  "${noticias[index].data['categoria']}",
+                                              id: "${noticias[index].documentID}",
+                                              data:
+                                                  "${formatDate(noticias[index].data['data'].toDate(), [
+                                                dd,
+                                                '/',
+                                                mm,
+                                                '/',
+                                                yyyy,
+                                              ])}",
+                                              youtube:
+                                                  "${noticias[index].data['youtube']}",
                                             ),
                                           ),
+                                        );
+                                        print("${noticias[index].documentID}");
+                                      },
+                                      child: Container(
+                                        height: 180,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                         ),
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            decoration: BoxDecoration(
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                backgroundColor: corPrincipal2,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            //IMAGEM
+                                            Container(
+                                              decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(7),
-                                                color: Colors.black
-                                                    .withOpacity(0.25)),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          child: Container(
-                                            decoration: BoxDecoration(
+                                              ),
+                                              height: 210,
+                                              width: double.infinity,
+                                              child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(7),
-                                                color: white.withOpacity(0.4)),
-                                            child: Hero(
-                                              tag:
-                                                  "${noticias[index].documentID}"
-                                                      .toString(),
-                                              child: Material(
-                                                color: Colors.transparent,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: Text(
-                                                      "${noticias[index].data['titulo']}",
-                                                      style: card20),
+                                                    BorderRadius.circular(7.0),
+                                                child:
+                                                    FadeInImage.memoryNetwork(
+                                                  placeholder:
+                                                      kTransparentImage,
+                                                  image:
+                                                      "${noticias[index].data['image']}",
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            //FILTRO PARA CARD
+                                            Positioned(
+                                              bottom: 0,
+                                              left: 0,
+                                              right: 0,
+                                              top: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                    color: Colors.black
+                                                        .withOpacity(0.11)),
+                                              ),
+                                            ),
+                                            //FILTRO RODA PE IMAGEM
+                                            Positioned(
+                                              bottom: 0,
+                                              left: 0,
+                                              right: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                    color:
+                                                        white.withOpacity(0.4)),
+                                                child: Hero(
+                                                  tag:
+                                                      "${noticias[index].documentID}"
+                                                          .toString(),
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(4.0),
+                                                      child: Text(
+                                                          "${noticias[index].data['titulo']}",
+                                                          style: card20),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                //DATA
+                                Positioned(
+                                  top: 195,
+                                  right: 20,
+                                  child: Hero(
+                                    tag: ("${noticias[index].documentID}" * 2)
+                                        .toString(),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(LineAwesomeIcons.clock_o,
+                                              size: 20.0, color: corFundoDark),
+                                          Text(
+                                            " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR_short')}",
+                                            style: fonteData,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                //FONTE
+                                Positioned(
+                                  top: 196,
+                                  left: 20,
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        "${noticias[index].data['fonte']}" ==
+                                                "Observatório de Ouro Fino"
+                                            ? Image.asset(
+                                                'lib/style/images/icones_fonte/observatorio.png',
+                                                height: 20,
+                                              )
+                                            : "${noticias[index].data['fonte']}" ==
+                                                    "Difusora Ouro Fino"
+                                                ? Image.asset(
+                                                    'lib/style/images/icones_fonte/difusora.png',
+                                                    height: 18,
+                                                  )
+                                                : "${noticias[index].data['fonte']}" ==
+                                                        "Tonogiro"
+                                                    ? Image.asset(
+                                                        'lib/style/images/icones_fonte/tonogiro.png',
+                                                        height: 30,
+                                                      )
+                                                    : "${noticias[index].data['fonte']}" ==
+                                                            "Jornal Folha de Ouro"
+                                                        ? Image.asset(
+                                                            'lib/style/images/icones_fonte/folhadeouro.png',
+                                                            height: 20,
+                                                          )
+                                                        : "${noticias[index].data['fonte']}" ==
+                                                                "G1 Sul de Minas"
+                                                            ? Image.asset(
+                                                                'lib/style/images/icones_fonte/g1.png',
+                                                                height: 20,
+                                                              )
+                                                            : SizedBox(),
+                                        // Text(
+                                        //   "${noticias[index].data['fonte']}",
+                                        //   style: fonteData,
+                                        // ),
                                       ],
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Positioned(
-                              top: 195,
-                              right: 20,
-                              child: Hero(
-                                tag: ("${noticias[index].documentID}" * 2)
-                                    .toString(),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(LineAwesomeIcons.clock_o,
-                                          size: 20.0, color: corFundoDark),
-                                      Text(
-                                        " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR_short')}",
-                                        style: fonteData,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 195,
-                              left: 20,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "${noticias[index].data['fonte']}",
-                                      style: fonteData,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       );
                     },
@@ -317,7 +372,7 @@ class _NoticiasState extends State<Noticias> {
         ),
         isLoading
             ? Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 100,
@@ -442,7 +497,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
             SliverAppBar(
               backgroundColor: Colors.transparent,
               pinned: false,
-              expandedHeight: 410.0,
+              expandedHeight: 320.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: InkWell(
                   onTap: () {
@@ -502,7 +557,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                       children: <Widget>[
                         //data
                         Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 20),
+                          padding: EdgeInsets.only(left: 10, bottom: 10),
                           child: Hero(
                             tag: (widget.id * 2).toString(),
                             child: Material(
@@ -510,7 +565,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                               child: Row(
                                 children: <Widget>[
                                   Icon(LineAwesomeIcons.clock_o,
-                                      size: 28.0, color: corFundoDark),
+                                      size: 24.0, color: corFundoDark),
                                   Padding(
                                     padding: EdgeInsets.only(top: 5),
                                     child: Text(
@@ -526,7 +581,7 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
 
                         //noticia
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.only(left: 10, right: 10, top: 5),
                           child: Text(
                             widget.noticia,
                             style: textoPagina,
@@ -564,8 +619,6 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                           child: Wrap(
                             children: <Widget>[
                               Chip(
-                                elevation: 3,
-                                shadowColor: corPrincipal2,
                                 backgroundColor: corPrincipal2,
                                 labelStyle: textoPagina,
                                 label: Text(
@@ -577,7 +630,6 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                                 width: 10,
                               ),
                               Chip(
-                                elevation: 3,
                                 backgroundColor: corSecundaria,
                                 labelStyle: textoPagina,
                                 label: Text(

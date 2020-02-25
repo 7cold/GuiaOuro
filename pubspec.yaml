@@ -5,14 +5,17 @@ version: 1.12.13+hotfix.6
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
+module:
+  androidX: true
+
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cloud_firestore: 0.13.0+1
-  firebase_core: 0.4.3+2
-  firebase_storage: ^3.1.0
+  cloud_firestore: any
+  firebase_core: ^0.4.4
+  firebase_storage: any
   firebase_auth: ^0.15.3
   timeago: any
   timeago_flutter: any
@@ -31,9 +34,11 @@ dependencies:
   flushbar: ^1.9.1
   flutter_svg: ^0.17.1
   flare_flutter: ^2.0.1
-  firebase_admob: ^0.9.0+10
+  firebase_admob: ^0.9.1
   youtube_player_flutter: ^6.0.3+2
-
+  firebase_messaging: any
+  
+  
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +58,11 @@ flutter:
     - lib/style/images/logo.png
     - lib/style/images/noticias-categorias/todas-noticias.svg
     - lib/style/images/erro/acesso-negado.png
+    - lib/style/images/icones_fonte/observatorio.png
+    - lib/style/images/icones_fonte/difusora.png
+    - lib/style/images/icones_fonte/tonogiro.png
+    - lib/style/images/icones_fonte/folhadeouro.png
+    - lib/style/images/icones_fonte/g1.png
     - lib/style/dark-map.json
     - lib/style/images/emBreve.png
     - lib/style/splash.flr

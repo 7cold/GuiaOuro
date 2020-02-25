@@ -426,7 +426,7 @@ class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
               borderRadius: BorderRadius.circular(7),
               child: Container(
                 decoration: BoxDecoration(
-                  color: corPrincipal,
+                  color: corPrincipal.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Row(
@@ -650,12 +650,12 @@ class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
                                   ))
                               .toList(),
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -169,8 +169,8 @@ TextStyle subTitulo5whiteReg = TextStyle(
 
 TextStyle textoPagina = TextStyle(
   fontFamily: textoReg,
-  color: Colors.black45,
-  fontSize: 22,
+  color: Colors.black54,
+  fontSize: 20,
 );
 
 TextStyle textoPagina2 = TextStyle(

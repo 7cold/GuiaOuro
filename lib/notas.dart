@@ -1,63 +1,89 @@
 // import 'package:flutter/material.dart';
-// import 'package:flare_flutter/asset_provider.dart';
-// import 'package:flare_flutter/cache.dart';
-// import 'package:flare_flutter/cache_asset.dart';
-// import 'package:flare_flutter/flare.dart';
-// import 'package:flare_flutter/flare_actor.dart';
-// import 'package:flare_flutter/flare_cache.dart';
-// import 'package:flare_flutter/flare_cache_asset.dart';
-// import 'package:flare_flutter/flare_cache_builder.dart';
-// import 'package:flare_flutter/flare_controller.dart';
-// import 'package:flare_flutter/flare_controls.dart';
-// import 'package:flare_flutter/flare_render_box.dart';
-// import 'package:flare_flutter/flare_testing.dart';
-// import 'package:flare_flutter/provider/asset_flare.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:http/http.dart' as http;
 
 // void main() => runApp(MyApp());
 
 // class MyApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(title: 'Flare Welcome', home: SplashScreen());
-//   }
-// }
-
-// class SplashScreen extends StatefulWidget {
-//   @override
-//   _SplashScreenState createState() => _SplashScreenState();
-// }
-
-// class _SplashScreenState extends State<SplashScreen> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     Future.delayed(Duration(seconds: 4), () {
-//       Navigator.pushReplacement(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => HomeView(),
-//           ));
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: FlareActor("lib/style/splash.flr",
-//           alignment: Alignment.center, fit: BoxFit.contain, animation: "Alarm"),
+//     return MaterialApp(
+//       title: "FCM",
+//       home: MyHomePage(),
 //     );
 //   }
 // }
 
-// class HomeView extends StatelessWidget {
+// class MyHomePage extends StatefulWidget {
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+//   String data = "Nenhuma notificação";
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _firebaseMessaging.configure(
+//       onMessage: (Map<String, dynamic> message) {
+//         print('on message $message');
+
+//         setState(() {
+//           data = message.toString();
+//         });
+//       },
+//       onResume: (Map<String, dynamic> message) {
+//         print('on resume $message');
+
+//         setState(() {
+//           data = message.toString();
+//         });
+//       },
+//       onLaunch: (Map<String, dynamic> message) {
+//         print('on launch $message');
+
+//         setState(() {
+//           data = message.toString();
+//         });
+//       },
+//     );
+//     _firebaseMessaging.requestNotificationPermissions(
+//         const IosNotificationSettings(sound: true, badge: true, alert: true));
+
+//     //_firebaseMessaging.subscribeToTopic("allDevices");
+//     // _firebaseMessaging.getToken().then((token) {
+//     //   print(token);
+//     // });
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: Color(0xff181818),
+//       appBar: AppBar(
+//         title: Text("FCM"),
+//       ),
 //       body: Center(
-//         child: Text(
-//           'Home View',
-//           style: TextStyle(color: Colors.white),
+//         child: new Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           children: [
+//             new Text(data),
+//             new RaisedButton(
+//                 child: new Text("Enviar menssagem"),
+//                 onPressed: () {
+//                   String DATA =
+//                       "{\"notification\": {\"body\": \"Nova notícia, venha conferir!\"}, \"priority\": \"high\", \"data\": {\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\", \"id\": \"1\", \"status\": \"done\"}, \"to\": \"/topics/allDevices\"}";
+//                   http.post("https://fcm.googleapis.com/fcm/send",
+//                       body: DATA,
+//                       headers: {
+//                         "Content-Type": "application/json",
+//                         "Authorization":
+//                             "key=AIzaSyDqxaEnKsdbRLDIkpBg5dQ7-OExOGYzY9U"
+//                       });
+//                   print(DATA);
+//                 }),
+//           ],
 //         ),
 //       ),
 //     );

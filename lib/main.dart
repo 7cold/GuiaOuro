@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -137,7 +139,12 @@ main() async {
   return runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -169,6 +176,7 @@ class _HomeState extends State<Home> {
   double heightContainer = 0;
   bool abrirMenu = false;
   DateTime dataAtual = DateTime.now();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   animatedProximoEvento() {
     setState(() {
@@ -184,33 +192,69 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void iniciarFirebaseListeners() {
+    if (Platform.isIOS) requisitarPermissoesParaNotificacoesNoIos();
+
+    _firebaseMessaging.subscribeToTopic("allDevices");
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('mensagem recebida $message');
+        this.mostrarAlert(
+            message["notification"]["title"], message["notification"]["body"]);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void requisitarPermissoesParaNotificacoesNoIos() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+  }
+
+  Future<void> mostrarAlert(title, message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[Text(message)],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Padding buildItem(DocumentSnapshot doc, BuildContext context) {
-    // var dataEventoBanco = (formatDate(doc.data['data'].toDate(), [
-    //   d,
-    //   '/',
-    //   m,
-    //   '/',
-    //   yyyy,
-    // ]));
-
-    // var dataAtualFormatada = "${dataAtual.day}" +
-    //     '/' +
-    //     "${dataAtual.month}" +
-    //     '/' +
-    //     "${dataAtual.year}";
-
-    var dataAtualTimestamp = Timestamp.now().microsecondsSinceEpoch;
-    var dataEventoBancoTimestamp = doc.data['data'].microsecondsSinceEpoch;
+    var dataAtual = Timestamp.now().microsecondsSinceEpoch;
+    var dataEventoBanco = doc.data['data'].microsecondsSinceEpoch;
 
     return Padding(
       padding: EdgeInsets.only(right: 30, left: 30, bottom: 0),
       child: Column(
         children: <Widget>[
-          // RaisedButton(onPressed: () {
-          //   print(dataAtualTimestamp);
-          //   print(dataEventoBancoTimestamp);
-          // }),
-          dataEventoBancoTimestamp >= dataAtualTimestamp
+          dataEventoBanco >= dataAtual
               ? AnimatedContainer(
                   duration: Duration(milliseconds: 300),
                   width: MediaQuery.of(context).size.width,
@@ -219,7 +263,7 @@ class _HomeState extends State<Home> {
                       color: corPrincipal2.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(7)),
                   child: Padding(
-                    padding: const EdgeInsets.all(9.0),
+                    padding: EdgeInsets.all(9.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,10 +290,40 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 )
-              : SizedBox()
+              : AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  width: MediaQuery.of(context).size.width,
+                  height: heightContainer,
+                  decoration: BoxDecoration(
+                      color: corPrincipal2.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(7)),
+                  child: Padding(
+                    padding: EdgeInsets.all(9.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          LineAwesomeIcons.exclamation,
+                          color: white,
+                        ),
+                        Text(
+                          "Nenhum evento",
+                          style: subTitulo3white,
+                        )
+                      ],
+                    ),
+                  ),
+                )
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.iniciarFirebaseListeners();
   }
 
   @override
