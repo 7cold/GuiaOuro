@@ -118,9 +118,15 @@ class _NoticiasState extends State<Noticias> {
             Positioned(
               left: 15,
               bottom: 5,
-              child: Text(
-                "Notícias",
-                style: tituloPrincipal2white,
+              child: Hero(
+                tag: "noticias",
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    "Notícias",
+                    style: tituloPrincipal2white,
+                  ),
+                ),
               ),
             ),
           ],

@@ -145,10 +145,16 @@ class Atracoes extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
-                    child: Text(
-                      "Atrações",
-                      style: tituloPrincipal,
-                      textAlign: TextAlign.left,
+                    child: Hero(
+                      tag: "atracoes",
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          "Atrações",
+                          style: tituloPrincipal,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -164,12 +170,35 @@ class Atracoes extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(left: 25, bottom: 10),
+                            padding: EdgeInsets.only(left: 25, bottom: 8),
                             child: Text(
                               "Principais",
                               style: subTitulo,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10, bottom: 10),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: db
+                                  .collection('atracoes')
+                                  .where('fav', isEqualTo: 1)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Chip(
+                                    backgroundColor: corPrincipal2,
+                                    label: Text(
+                                      snapshot.data.documents.length.toString(),
+                                      style: fonteTag,
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
                             ),
                           ),
                         ],
@@ -185,6 +214,25 @@ class Atracoes extends StatelessWidget {
                         Text(
                           "Todas",
                           style: subTitulo,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: db.collection('atracoes').snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Chip(
+                                  backgroundColor: corPrincipal2,
+                                  label: Text(
+                                    snapshot.data.documents.length.toString(),
+                                    style: fonteTag,
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -243,52 +291,73 @@ class _PrincipaisAtracoes extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children:
                     snapshot.data.documents.map((DocumentSnapshot document) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 10, bottom: 20, right: 10),
-                    child: Material(
-                      elevation: 7,
-                      shadowColor: corPrincipal2.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(7),
-                      child: Container(
-                        decoration: BoxDecoration(
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        var eventosChip = document.data['eventosChip'];
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => _AtracoesDetalhes(
+                                    img: "${document.data['img']}",
+                                    atracao: "${document.data['atracao']}",
+                                    descricao: "${document.data['descricao']}",
+                                    eventosChip: eventosChip,
+                                    id: document.documentID,
+                                  )),
+                        );
+                      },
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 20, right: 10),
+                        child: Material(
+                          elevation: 7,
+                          shadowColor: corPrincipal2.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(7),
-                        ),
-                        width: 200,
-                        child: Stack(
-                          children: <Widget>[
-                            Center(
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: corPrincipal2,
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              height: 150,
-                              width: double.infinity,
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(7.0),
-                                child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: "${document.data['img']}",
-                                  fit: BoxFit.cover,
+                            width: 200,
+                            child: Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: corPrincipal2,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  height: 150,
+                                  width: double.infinity,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    child: FadeInImage.memoryNetwork(
+                                      placeholder: kTransparentImage,
+                                      image: "${document.data['img']}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                    left: 10,
+                                    bottom: 10,
+                                    child: Text(
+                                      "${document.data['atracao']}",
+                                      style: card20,
+                                    ))
+                              ],
                             ),
-                            Positioned(
-                                left: 10,
-                                bottom: 10,
-                                child: Text(
-                                  "${document.data['atracao']}",
-                                  style: card20,
-                                ))
-                          ],
+                          ),
                         ),
                       ),
                     ),

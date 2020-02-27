@@ -112,7 +112,7 @@ class FeedHomeadmin extends StatelessWidget {
                 corBotao: corPrincipal2,
                 height: 50,
                 icone: LineAwesomeIcons.bell,
-                rota: MyHomePage(),
+                rota: Notificacoes(),
                 texto: "Notificação",
                 width: 210,
               ),

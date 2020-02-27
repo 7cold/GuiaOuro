@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
+import 'package:teste2/style/style.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(NotificacoesApp());
 
-class MyApp extends StatelessWidget {
+class NotificacoesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "FCM",
-      home: MyHomePage(),
+      home: Notificacoes(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class Notificacoes extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NotificacoesState createState() => _NotificacoesState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NotificacoesState extends State<Notificacoes> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   String data = "Nenhuma notificação";
 
@@ -51,26 +51,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
-
-    //_firebaseMessaging.subscribeToTopic("allDevices");
-    // _firebaseMessaging.getToken().then((token) {
-    //   print(token);
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("FCM"),
-      ),
+      backgroundColor: corFundo,
       body: Center(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            new Text(data),
+            Text(data),
             new RaisedButton(
-                child: new Text("Enviar menssagem"),
+                child: new Text("Nova Notícia"),
                 onPressed: () {
                   String DATA =
                       "{\"notification\": {\"body\": \"Nova notícia, venha conferir!\"}, \"priority\": \"high\", \"data\": {\"click_action\": \"FLUTTER_NOTIFICATION_CLICK\", \"id\": \"1\", \"status\": \"done\"}, \"to\": \"/topics/allDevices\"}";

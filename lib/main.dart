@@ -379,11 +379,13 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   _Feed(
+                    tagHero: "noticias",
                     text: "Notícias",
                     foto: 'lib/style/images/noticias.jpg',
                     pagina: Noticias(),
                   ),
                   _Feed(
+                    tagHero: "atracoes",
                     text: "Atrações",
                     foto: 'lib/style/images/atracoes.jpg',
                     pagina: Atracoes(),
@@ -486,6 +488,7 @@ class _HomeState extends State<Home> {
                     },
                   ),
                   _Feed(
+                      tagHero: "gastronomia",
                       text: "Gastronomia",
                       foto: 'lib/style/images/gastronomia.jpg',
                       pagina: Gastronomia()),
@@ -520,8 +523,10 @@ class _Feed extends StatelessWidget {
   final String text;
   final String foto;
   final Object pagina;
+  final String tagHero;
 
-  const _Feed({Key key, this.text, this.foto, this.pagina}) : super(key: key);
+  const _Feed({Key key, this.text, this.foto, this.pagina, this.tagHero})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -565,7 +570,11 @@ class _Feed extends StatelessWidget {
                 Positioned(
                   bottom: 2,
                   left: 10,
-                  child: Text(text, style: card22),
+                  child: Hero(
+                      tag: tagHero,
+                      child: Material(
+                          color: Colors.transparent,
+                          child: Text(text, style: card22))),
                 ),
               ],
             ),
@@ -622,17 +631,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ],
           ),
-          // Positioned(
-          //   top: 20,
-          //   child: SizedBox(
-          //     height: 150,
-          //     child: FlareActor(
-          //       "lib/style/load.flr",
-          //       animation: "Loading",
-          //       fit: BoxFit.contain,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -18,9 +18,15 @@ class Gastronomia extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
-                      child: Image.asset(
-                        "lib/style/images/emBreve.png",
-                        scale: 8,
+                      child: Hero(
+                        tag: "gastronomia",
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Image.asset(
+                            "lib/style/images/emBreve.png",
+                            scale: 8,
+                          ),
+                        ),
                       ),
                     ),
                   ],

@@ -66,7 +66,7 @@ class Sobre extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Contato: leobragac@hotmail.com",
+                                "Contato: 7cold.co@gmail.com",
                                 style: subTitulo3white,
                                 textAlign: TextAlign.center,
                               ),
