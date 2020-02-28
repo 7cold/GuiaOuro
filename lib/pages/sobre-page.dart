@@ -1,8 +1,9 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/admin/sign-in.dart';
 import 'package:teste2/style/style.dart';
-
+import 'package:intl/intl.dart';
 import 'package:teste2/style/widget-botao.dart';
 
 class Sobre extends StatelessWidget {
@@ -40,7 +41,7 @@ class Sobre extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Aplicativo desenvolvido para aqueles que tem interesse nas notícias, eventos e gastronomia da cidade.",
+                            "Aplicativo desenvolvido para aqueles que tem interesse nas notícias, eventos e gastronomia da cidade de Ouro Fino - MG.",
                             style: subTitulo3white,
                             textAlign: TextAlign.center,
                           ),
@@ -71,7 +72,8 @@ class Sobre extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                               Text(
-                                "Todos os Direitos Reservados - 2020",
+                                "Todos os Direitos Reservados - " +
+                                    formatDate(DateTime.now(), [yyyy]),
                                 style: subTitulo3white,
                                 textAlign: TextAlign.center,
                               ),

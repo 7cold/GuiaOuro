@@ -56,7 +56,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           Padding(
             padding: EdgeInsets.only(top: 20, bottom: 20),
             child: Text(
-              "Guia de Ouro Fino",
+              "GuiaOuro - Login",
               style: tituloPrincipal2,
             ),
           ),

@@ -585,7 +585,7 @@ class _NoticiasCadState extends State<NoticiasCad> {
   CampoTexto textFormYoutube() {
     return CampoTexto(
       controller: controllerYoutube,
-      variavel: youtube = controllerLink.text,
+      variavel: youtube = controllerYoutube.text,
       hintText: "Link Video Youtube",
       icone: LineAwesomeIcons.youtube,
       textInputAction: TextInputAction.done,

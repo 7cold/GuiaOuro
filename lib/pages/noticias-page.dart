@@ -305,8 +305,10 @@ class _NoticiasState extends State<Noticias> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Icon(LineAwesomeIcons.clock_o,
-                                              size: 20.0, color: corFundoDark),
+                                          Icon(LineAwesomeIcons.calendar,
+                                              size: 20.0,
+                                              color: corFundoDark
+                                                  .withOpacity(0.7)),
                                           Text(
                                             " ${timeago.format((noticias[index].data['data'] as Timestamp).toDate(), locale: 'pt_BR_short')}",
                                             style: fonteData,
@@ -570,8 +572,9 @@ class _NoticiasDetalhesState extends State<NoticiasDetalhes> {
                               color: Colors.transparent,
                               child: Row(
                                 children: <Widget>[
-                                  Icon(LineAwesomeIcons.clock_o,
-                                      size: 24.0, color: corFundoDark),
+                                  Icon(LineAwesomeIcons.calendar,
+                                      size: 24.0,
+                                      color: corFundoDark.withOpacity(0.7)),
                                   Padding(
                                     padding: EdgeInsets.only(top: 5),
                                     child: Text(

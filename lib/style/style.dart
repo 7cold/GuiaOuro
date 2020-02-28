@@ -155,6 +155,30 @@ TextStyle subTitulo4white = TextStyle(
   fontSize: 20,
 );
 
+TextStyle subTitulo4 = TextStyle(
+  fontFamily: bold,
+  color: corFundoDark,
+  fontSize: 18,
+);
+
+TextStyle subTitulo4Reg = TextStyle(
+  fontFamily: reg,
+  color: corFundoDark,
+  fontSize: 18,
+);
+
+TextStyle subTitulo4RegRed = TextStyle(
+  fontFamily: reg,
+  color: redDelete,
+  fontSize: 18,
+);
+
+TextStyle subTitulo4RegGreen = TextStyle(
+  fontFamily: reg,
+  color: greenAcept,
+  fontSize: 18,
+);
+
 TextStyle subTitulo5white = TextStyle(
   fontFamily: bold,
   color: corFundoLight,
@@ -278,6 +302,12 @@ TextStyle fonteErroInput = TextStyle(
   fontFamily: reg,
   color: redDelete,
   fontSize: 13,
+);
+
+TextStyle fonteChip = TextStyle(
+  fontFamily: bold,
+  color: corFundoLight,
+  fontSize: 14,
 );
 
 //-----------------

@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/admin/atracoes-consulta.dart';
+import 'package:teste2/admin/emprego-consulta.dart';
 import 'package:teste2/admin/eventosFuturos-consulta.dart';
 import 'package:teste2/admin/noticias-consulta.dart';
 import 'package:teste2/admin/notificacoes.dart';
+import 'package:teste2/pages/emprego-page.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 
@@ -97,6 +99,23 @@ class FeedHomeadmin extends StatelessWidget {
                 icone: LineAwesomeIcons.microphone,
                 rota: ConsultaEventosFuturos(),
                 texto: "Eventos Futuros",
+                width: 210,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              BotaoRota(
+                corBotao: corPrincipal2,
+                height: 50,
+                icone: LineAwesomeIcons.suitcase,
+                rota: EmpregoConsulta(),
+                texto: "Emprego",
                 width: 210,
               ),
             ],

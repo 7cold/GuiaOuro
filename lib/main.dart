@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/pages/atracoes-page.dart';
+import 'package:teste2/pages/emprego-page.dart';
 import 'package:teste2/pages/gastronomia-page.dart';
 import 'package:teste2/pages/noticias-page.dart';
 import 'package:teste2/pages/sobre-page.dart';
@@ -180,7 +181,7 @@ class _HomeState extends State<Home> {
 
   animatedProximoEvento() {
     setState(() {
-      heightContainer = 90;
+      heightContainer = 135;
       abrirMenu = true;
     });
   }
@@ -247,74 +248,174 @@ class _HomeState extends State<Home> {
   }
 
   Padding buildItem(DocumentSnapshot doc, BuildContext context) {
-    var dataAtual = Timestamp.now().microsecondsSinceEpoch;
-    var dataEventoBanco = doc.data['data'].microsecondsSinceEpoch;
-
-    return Padding(
-      padding: EdgeInsets.only(right: 30, left: 30, bottom: 0),
-      child: Column(
-        children: <Widget>[
-          dataEventoBanco >= dataAtual
-              ? AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  width: MediaQuery.of(context).size.width,
-                  height: heightContainer,
-                  decoration: BoxDecoration(
-                      color: corPrincipal2.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(7)),
+    void showFancyCustomDialog(BuildContext context) {
+      Dialog fancyDialog = Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 60,
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.31,
                   child: Padding(
-                    padding: EdgeInsets.all(9.0),
+                    padding: EdgeInsets.only(left: 15),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "${doc.data['evento']}",
-                          style: subTitulo3white,
+                          doc.data['evento'],
+                          style: subTitulo4,
                         ),
-                        Text(
-                          '${formatDate(doc.data['data'].toDate(), [
-                            dd,
-                            '/',
-                            mm,
-                            '/',
-                            yyyy,
-                          ])}',
-                          style: subTitulo5whiteReg,
+                        Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Data: ",
+                                style: subTitulo4Reg,
+                              ),
+                              Text(
+                                '${formatDate(doc.data['data'].toDate(), [
+                                  dd,
+                                  '/',
+                                  mm,
+                                  '/',
+                                  yyyy,
+                                ])}',
+                                style: subTitulo4,
+                              ),
+                            ],
+                          ),
                         ),
-                        Text(
-                          "${doc.data['atracao']}",
-                          style: subTitulo5whiteReg,
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Local: ",
+                              style: subTitulo4Reg,
+                            ),
+                            Text(
+                              doc.data['atracao'],
+                              style: subTitulo4,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                )
-              : AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  width: MediaQuery.of(context).size.width,
-                  height: heightContainer,
-                  decoration: BoxDecoration(
-                      color: corPrincipal2.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(7)),
-                  child: Padding(
-                    padding: EdgeInsets.all(9.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          LineAwesomeIcons.exclamation,
-                          color: white,
-                        ),
-                        Text(
-                          "Nenhum evento",
-                          style: subTitulo3white,
+                        Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: Text(
+                            doc.data['descricao'],
+                            style: subTitulo4Reg,
+                          ),
                         )
                       ],
                     ),
                   ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 50,
+                alignment: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                  color: corPrincipal2.withOpacity(0.8),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Evento",
+                    style: subTitulo2white,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment(1.05, -1.05),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: corPrincipal2,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+      showDialog(
+          context: context, builder: (BuildContext context) => fancyDialog);
+    }
+
+    var dataAtual = Timestamp.now().microsecondsSinceEpoch;
+    var dataEventoBanco = doc.data['data'].microsecondsSinceEpoch;
+
+    return Padding(
+      padding: EdgeInsets.only(right: 30, left: 30, bottom: 3),
+      child: Column(
+        children: <Widget>[
+          dataEventoBanco >= dataAtual
+              ? Material(
+                  child: InkWell(
+                    onTap: () {
+                      showFancyCustomDialog(context);
+                    },
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      width: MediaQuery.of(context).size.width,
+                      height: heightContainer,
+                      decoration: BoxDecoration(
+                          color: corPrincipal2.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(7)),
+                      child: Padding(
+                        padding: EdgeInsets.all(9.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "${doc.data['evento']}",
+                              style: subTitulo3white,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Text(
+                                '${formatDate(doc.data['data'].toDate(), [
+                                  dd,
+                                  '/',
+                                  mm,
+                                  '/',
+                                  yyyy,
+                                ])}',
+                                style: subTitulo5whiteReg,
+                              ),
+                            ),
+                            Text(
+                              "${doc.data['atracao']}",
+                              style: subTitulo5whiteReg,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 )
+              : SizedBox()
         ],
       ),
     );
@@ -378,21 +479,9 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  _Feed(
-                    tagHero: "noticias",
-                    text: "Notícias",
-                    foto: 'lib/style/images/noticias.jpg',
-                    pagina: Noticias(),
-                  ),
-                  _Feed(
-                    tagHero: "atracoes",
-                    text: "Atrações",
-                    foto: 'lib/style/images/atracoes.jpg',
-                    pagina: Atracoes(),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 8),
+                        top: 10, left: 30, right: 30, bottom: 6),
                     child: Material(
                       elevation: 3,
                       shadowColor: corPrincipal2.withOpacity(0.6),
@@ -418,9 +507,20 @@ class _HomeState extends State<Home> {
                                 EdgeInsets.only(left: 10, bottom: 5, top: 5),
                             child: Stack(
                               children: <Widget>[
-                                Text(
-                                  "Eventos Futuros",
-                                  style: subTitulo5white,
+                                Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      LineAwesomeIcons.calendar,
+                                      color: corFundoLight,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 5, left: 5),
+                                      child: Text(
+                                        "Eventos Futuros",
+                                        style: subTitulo5white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 abrirMenu == false
                                     ? Positioned(
@@ -488,10 +588,27 @@ class _HomeState extends State<Home> {
                     },
                   ),
                   _Feed(
+                    tagHero: "noticias",
+                    text: "Notícias",
+                    foto: 'lib/style/images/noticias.jpg',
+                    pagina: Noticias(),
+                  ),
+                  _Feed(
+                    tagHero: "atracoes",
+                    text: "Atrações",
+                    foto: 'lib/style/images/atracoes.jpg',
+                    pagina: Atracoes(),
+                  ),
+                  _Feed(
                       tagHero: "gastronomia",
                       text: "Gastronomia",
                       foto: 'lib/style/images/gastronomia.jpg',
                       pagina: Gastronomia()),
+                  _Feed(
+                      tagHero: "emprego",
+                      text: "Vagas de Emprego",
+                      foto: 'lib/style/images/gastronomia.jpg',
+                      pagina: Emprego()),
                   Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 15),
                     child: Row(

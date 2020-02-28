@@ -30,7 +30,7 @@ class Atracoes extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => _AtracoesDetalhes(
+                      builder: (context) => AtracoesDetalhes(
                             img: "${doc.data['img']}",
                             atracao: "${doc.data['atracao']}",
                             descricao: "${doc.data['descricao']}",
@@ -188,11 +188,17 @@ class Atracoes extends StatelessWidget {
                                   .snapshots(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  return Chip(
-                                    backgroundColor: corPrincipal2,
-                                    label: Text(
-                                      snapshot.data.documents.length.toString(),
-                                      style: fonteTag,
+                                  return SizedBox(
+                                    height: 32,
+                                    width: 32,
+                                    child: Chip(
+                                      backgroundColor:
+                                          corPrincipal2.withOpacity(0.8),
+                                      label: Text(
+                                        snapshot.data.documents.length
+                                            .toString(),
+                                        style: fonteChip,
+                                      ),
                                     ),
                                   );
                                 } else {
@@ -221,11 +227,16 @@ class Atracoes extends StatelessWidget {
                             stream: db.collection('atracoes').snapshots(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return Chip(
-                                  backgroundColor: corPrincipal2,
-                                  label: Text(
-                                    snapshot.data.documents.length.toString(),
-                                    style: fonteTag,
+                                return SizedBox(
+                                  width: 37,
+                                  height: 38,
+                                  child: Chip(
+                                    backgroundColor:
+                                        corPrincipal2.withOpacity(0.8),
+                                    label: Text(
+                                      snapshot.data.documents.length.toString(),
+                                      style: fonteChip,
+                                    ),
                                   ),
                                 );
                               } else {
@@ -300,7 +311,7 @@ class _PrincipaisAtracoes extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => _AtracoesDetalhes(
+                              builder: (context) => AtracoesDetalhes(
                                     img: "${document.data['img']}",
                                     atracao: "${document.data['atracao']}",
                                     descricao: "${document.data['descricao']}",
@@ -447,14 +458,14 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
 //______________________________ ATRACOES DETALHES _____________________________
 
-class _AtracoesDetalhes extends StatefulWidget {
+class AtracoesDetalhes extends StatefulWidget {
   final String img;
   final String atracao;
   final String descricao;
   final List eventosChip;
   final String id;
 
-  _AtracoesDetalhes(
+  AtracoesDetalhes(
       {Key key,
       this.img,
       this.atracao,
@@ -464,10 +475,10 @@ class _AtracoesDetalhes extends StatefulWidget {
       : super(key: key);
 
   @override
-  __AtracoesDetalhesState createState() => __AtracoesDetalhesState();
+  _AtracoesDetalhesState createState() => _AtracoesDetalhesState();
 }
 
-class __AtracoesDetalhesState extends State<_AtracoesDetalhes> {
+class _AtracoesDetalhesState extends State<AtracoesDetalhes> {
   Column buildEvento(DocumentSnapshot doc, BuildContext context) {
     if (doc.data['evento'] == 'nao apagar') {
       return Column(
