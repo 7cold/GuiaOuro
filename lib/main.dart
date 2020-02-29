@@ -454,7 +454,7 @@ class _HomeState extends State<Home> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 15),
+                            padding: EdgeInsets.only(top: 40),
                             child: Image.asset(
                               "lib/style/images/logo.png",
                               scale: 25,
@@ -607,10 +607,10 @@ class _HomeState extends State<Home> {
                   _Feed(
                       tagHero: "emprego",
                       text: "Vagas de Emprego",
-                      foto: 'lib/style/images/gastronomia.jpg',
+                      foto: 'lib/style/images/emprego.jpg',
                       pagina: Emprego()),
                   Padding(
-                    padding: EdgeInsets.only(top: 20, bottom: 15),
+                    padding: EdgeInsets.only(top: 20, bottom: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -619,7 +619,7 @@ class _HomeState extends State<Home> {
                           corBotao: corPrincipal2,
                           rota: Sobre(),
                           icone: LineAwesomeIcons.info_circle,
-                          height: 50,
+                          height: 40,
                           texto: "Sobre",
                           width: 150,
                         ),

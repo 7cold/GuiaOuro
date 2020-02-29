@@ -54,6 +54,7 @@ flutter:
     - lib/style/images/noticias.jpg
     - lib/style/images/atracoes.jpg
     - lib/style/images/gastronomia.jpg
+    - lib/style/images/emprego.jpg
     - lib/style/images/sobre.png
     - lib/style/images/logo.png
     - lib/style/images/noticias-categorias/todas-noticias.svg

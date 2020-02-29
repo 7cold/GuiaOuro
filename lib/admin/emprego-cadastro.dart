@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/style/style.dart';
+import 'package:intl/intl.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-campo-texto.dart';
+import 'package:timeago/timeago.dart';
 
 final db = Firestore.instance;
 
@@ -15,6 +18,7 @@ class EmpregoCad extends StatefulWidget {
 
 class _EmpregoCadState extends State<EmpregoCad> {
   final _formKey = GlobalKey<FormState>();
+  final format = new DateFormat.yMMMd().add_Hm();
 
   String idEmprego;
   String vaga;
@@ -22,6 +26,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
   String local;
   String contato;
   String fonte;
+  DateTime data;
   String disponilidade;
 
   TextEditingController controllerVaga = TextEditingController();
@@ -29,6 +34,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
   TextEditingController controllerLocal = TextEditingController();
   TextEditingController controllerContato = TextEditingController();
   TextEditingController controllerFonte = TextEditingController();
+  TextEditingController controllerData = TextEditingController();
   TextEditingController controllerDisponibilidade = TextEditingController();
 
   @override
@@ -60,6 +66,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
                             controller: controllerVaga,
                             variavel: vaga = controllerVaga.text,
                             textCap: TextCapitalization.words,
+                            textInputAction: TextInputAction.done,
                           ),
                           CampoTextoNaoObrigatorio(
                             hintText: "Descrição",
@@ -69,17 +76,78 @@ class _EmpregoCadState extends State<EmpregoCad> {
                           ),
                           CampoTextoNaoObrigatorio(
                             hintText: "Local",
-                            icone: LineAwesomeIcons.pencil,
+                            icone: LineAwesomeIcons.map_marker,
                             controller: controllerLocal,
                             variavel: local = controllerLocal.text,
                             textCap: TextCapitalization.words,
                           ),
                           CampoTextoNaoObrigatorio(
                             hintText: "Contato",
-                            icone: LineAwesomeIcons.pencil,
+                            icone: LineAwesomeIcons.user,
                             controller: controllerContato,
                             variavel: contato = controllerContato.text,
                             textCap: TextCapitalization.words,
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.only(top: 20, left: 10, right: 10),
+                            child: Material(
+                              elevation: 2,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(7)),
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  primaryColor: corSecundaria,
+                                  accentColor: corPrincipal,
+                                  buttonTheme: ButtonThemeData(
+                                    textTheme: ButtonTextTheme.normal,
+                                  ),
+                                ),
+                                child: DateTimeField(
+                                    controller: controllerData,
+                                    style: fonteCampoTexto,
+                                    format: format,
+                                    onShowPicker: (context, currentValue) {
+                                      return showDatePicker(
+                                          context: context,
+                                          firstDate: DateTime(2018),
+                                          initialDate:
+                                              currentValue ?? DateTime.now(),
+                                          lastDate: DateTime(2025));
+                                    },
+                                    decoration: InputDecoration(
+                                      errorStyle: fonteErroInput,
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: corPrincipal, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15.0)),
+                                      ),
+                                      hintText: "Data",
+                                      prefixIcon: Icon(
+                                        LineAwesomeIcons.calendar_check_o,
+                                        size: 24,
+                                        color: corSecundaria,
+                                      ),
+                                      hintStyle: fonteCampoTextoHint,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Campo Obrigatório*';
+                                      }
+                                    },
+                                    onSaved: (value) => data = value),
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -196,6 +264,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
         'local': controllerLocal.text,
         'contato': controllerContato.text,
         'fonte': '$fonte',
+        'data': Timestamp.fromDate(data),
         'disponibilidade': '$disponilidade',
       });
 

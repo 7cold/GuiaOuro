@@ -5,12 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:teste2/admin/emprego-cadastro.dart';
-import 'package:teste2/admin/noticias-cadastro.dart';
 import 'package:teste2/style/style.dart';
 import 'package:date_format/date_format.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-campo-texto.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 final db = Firestore.instance;
 
@@ -26,8 +24,7 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
   DocumentSnapshot _currentDocument;
 
   String id;
-  TextEditingController controllerUpdateTitulo = TextEditingController();
-  TextEditingController controllerUpdateNoticia = TextEditingController();
+  TextEditingController controllerUpdateDisp = TextEditingController();
 
   Slidable _buildEmprego(DocumentSnapshot doc) {
     return Slidable(
@@ -41,8 +38,7 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
             caption: "Editar",
             onTap: () {
               _currentDocument = doc;
-              controllerUpdateTitulo.text = doc.data['titulo'];
-              controllerUpdateNoticia.text = doc.data['noticia'];
+              controllerUpdateDisp.text = doc.data['disponibilidade'];
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
@@ -63,13 +59,8 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
                               ),
                             ),
                             CampoTexto(
-                              controller: controllerUpdateTitulo,
-                              icone: Icons.title,
-                            ),
-                            CampoTexto(
-                              controller: controllerUpdateNoticia,
-                              icone: Icons.dehaze,
-                              maxLines: 8,
+                              controller: controllerUpdateDisp,
+                              icone: Icons.check,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -142,9 +133,52 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
                     style: subTitulo4Reg,
                   ),
                   Text(
-                    doc.data['disponibilidade'].toString(),
+                    '${formatDate(doc.data['data'].toDate(), [
+                      dd,
+                      '/',
+                      mm,
+                      '/',
+                      yyyy,
+                    ])}',
                     style: subTitulo4Reg,
                   ),
+                  Text(
+                    doc.data['fonte'],
+                    style: subTitulo4Reg,
+                  ),
+                  doc.data['disponibilidade'] == "0"
+                      ? Row(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.ban,
+                              color: redDelete,
+                              size: 18,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 4, left: 4),
+                              child: Text(
+                                "Indisponível",
+                                style: subTitulo4RegRed,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.check,
+                              color: greenAcept,
+                              size: 18,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 4, left: 4),
+                              child: Text(
+                                "Disponível",
+                                style: subTitulo4RegGreen,
+                              ),
+                            ),
+                          ],
+                        )
                 ],
               ))),
     );
@@ -186,7 +220,10 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
               ),
 // -------------------------------- Lista de Noticias --------------------------------
               StreamBuilder<QuerySnapshot>(
-                stream: db.collection('emprego').snapshots(),
+                stream: db
+                    .collection('emprego')
+                    .orderBy("data", descending: true)
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Column(
@@ -225,11 +262,10 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
 
   updateData() async {
     await db
-        .collection('noticias')
+        .collection('emprego')
         .document(_currentDocument.documentID)
         .updateData({
-      'titulo': controllerUpdateTitulo.text,
-      'noticia': controllerUpdateNoticia.text
+      'disponibilidade': controllerUpdateDisp.text,
     });
 
     Navigator.of(context).pop();
@@ -237,8 +273,8 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
       margin: EdgeInsets.all(20),
       borderRadius: 7,
       backgroundColor: greenAcept,
-      title: "Not��cia Editada",
-      message: "Notícia Editada com sucesso",
+      title: "Emprego Editado",
+      message: "Emprego Editado com sucesso",
       duration: Duration(seconds: 5),
     )..show(context);
   }

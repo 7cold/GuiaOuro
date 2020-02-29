@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:teste2/style/style.dart';
@@ -18,60 +19,110 @@ Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                doc.data['vaga'],
-                style: subTitulo4,
-              ),
-              Text(
-                doc.data['descricao'],
-                style: subTitulo4Reg,
-              ),
-              Text(
-                doc.data['local'],
-                style: subTitulo4Reg,
-              ),
-              Text(
-                doc.data['contato'],
-                style: subTitulo4Reg,
-              ),
-              doc.data['disponibilidade'] == 0
-                  ? Row(
-                      children: <Widget>[
-                        Icon(
-                          LineAwesomeIcons.ban,
-                          color: redDelete,
-                          size: 18,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4, left: 4),
-                          child: Text(
-                            "Indisponível",
-                            style: subTitulo4RegRed,
-                          ),
-                        ),
-                      ],
+          child: Stack(children: [
+            Positioned(
+              right: 10,
+              bottom: 2,
+              child: "${doc.data['fonte']}" == "Observatório de Ouro Fino"
+                  ? Image.asset(
+                      'lib/style/images/icones_fonte/observatorio.png',
+                      height: 20,
                     )
-                  : Row(
-                      children: <Widget>[
-                        Icon(
-                          LineAwesomeIcons.check,
-                          color: greenAcept,
-                          size: 18,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4, left: 4),
-                          child: Text(
-                            "Disponível",
-                            style: subTitulo4RegGreen,
+                  : "${doc.data['fonte']}" == "Difusora Ouro Fino"
+                      ? Image.asset(
+                          'lib/style/images/icones_fonte/difusora.png',
+                          height: 18,
+                        )
+                      : "${doc.data['fonte']}" == "Tonogiro"
+                          ? Image.asset(
+                              'lib/style/images/icones_fonte/tonogiro.png',
+                              height: 30,
+                            )
+                          : "${doc.data['fonte']}" == "Jornal Folha de Ouro"
+                              ? Image.asset(
+                                  'lib/style/images/icones_fonte/folhadeouro.png',
+                                  height: 20,
+                                )
+                              : "${doc.data['fonte']}" == "G1 Sul de Minas"
+                                  ? Image.asset(
+                                      'lib/style/images/icones_fonte/g1.png',
+                                      height: 20,
+                                    )
+                                  : SizedBox(),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  doc.data['vaga'],
+                  style: subTitulo4,
+                ),
+                Text(
+                  doc.data['descricao'],
+                  style: subTitulo4Reg,
+                ),
+                Text(
+                  doc.data['local'],
+                  style: subTitulo4Reg,
+                ),
+                Text(
+                  doc.data['contato'],
+                  style: subTitulo4Reg,
+                ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      "Cadastrado: ",
+                      style: subTitulo4Reg,
+                    ),
+                    Text(
+                      '${formatDate(doc.data['data'].toDate(), [
+                        dd,
+                        '/',
+                        mm,
+                        '/',
+                        yyyy,
+                      ])}',
+                      style: subTitulo4Reg,
+                    ),
+                  ],
+                ),
+                doc.data['disponibilidade'] == "0"
+                    ? Row(
+                        children: <Widget>[
+                          Icon(
+                            LineAwesomeIcons.ban,
+                            color: redDelete,
+                            size: 18,
                           ),
-                        ),
-                      ],
-                    )
-            ],
-          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4, left: 4),
+                            child: Text(
+                              "Indisponível",
+                              style: subTitulo4RegRed,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: <Widget>[
+                          Icon(
+                            LineAwesomeIcons.check,
+                            color: greenAcept,
+                            size: 18,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4, left: 4),
+                            child: Text(
+                              "Disponível",
+                              style: subTitulo4RegGreen,
+                            ),
+                          ),
+                        ],
+                      )
+              ],
+            ),
+          ]),
         ),
       ),
     ),
@@ -90,14 +141,23 @@ class Emprego extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 10, bottom: 20),
-                  child: Text(
-                    "Vaga de Emprego",
-                    style: tituloPrincipal,
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  child: Hero(
+                    tag: "emprego",
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Text(
+                        "Vagas de Emprego",
+                        style: tituloPrincipal,
+                      ),
+                    ),
                   ),
                 ),
                 StreamBuilder<QuerySnapshot>(
-                  stream: db.collection("emprego").snapshots(),
+                  stream: db
+                      .collection("emprego")
+                      .orderBy("data", descending: true)
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Column(
