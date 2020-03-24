@@ -43,6 +43,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
       backgroundColor: corFundo,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
               Container(
@@ -81,12 +82,26 @@ class _EmpregoCadState extends State<EmpregoCad> {
                             variavel: local = controllerLocal.text,
                             textCap: TextCapitalization.words,
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Valor Padrão: Não Informado.",
+                              style: fonteLabel,
+                            ),
+                          ),
                           CampoTextoNaoObrigatorio(
                             hintText: "Contato",
                             icone: LineAwesomeIcons.user,
                             controller: controllerContato,
                             variavel: contato = controllerContato.text,
                             textCap: TextCapitalization.words,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              "Valor Padrão: (xx) xxxxx-xxxx",
+                              style: fonteLabel,
+                            ),
                           ),
                           Padding(
                             padding:
@@ -167,7 +182,7 @@ class _EmpregoCadState extends State<EmpregoCad> {
                                       child: Text(
                                         'Difusora Ouro Fino',
                                       ),
-                                      value: "Difurosa Ouro FIno",
+                                      value: "Difusora Ouro Fino",
                                     ),
                                   ],
                                   onChanged: (String value) {
@@ -195,13 +210,13 @@ class _EmpregoCadState extends State<EmpregoCad> {
                                   items: [
                                     DropdownMenuItem<String>(
                                       child: Text(
-                                        'Disponível',
+                                        'Sim',
                                       ),
                                       value: "1",
                                     ),
                                     DropdownMenuItem<String>(
                                       child: Text(
-                                        'Indisponível',
+                                        'Não',
                                       ),
                                       value: "0",
                                     ),
@@ -261,8 +276,11 @@ class _EmpregoCadState extends State<EmpregoCad> {
       DocumentReference ref = await db.collection('emprego').add({
         'vaga': controllerVaga.text,
         'descricao': controllerDescricao.text,
-        'local': controllerLocal.text,
-        'contato': controllerContato.text,
+        'local':
+            controllerLocal.text == "" ? "Não Informado" : controllerLocal.text,
+        'contato': controllerContato.text == ""
+            ? "(xx) xxxxx-xxxx"
+            : controllerContato.text,
         'fonte': '$fonte',
         'data': Timestamp.fromDate(data),
         'disponibilidade': '$disponilidade',

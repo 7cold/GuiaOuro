@@ -11,6 +11,7 @@ import 'package:teste2/pages/emprego-page.dart';
 import 'package:teste2/pages/gastronomia-page.dart';
 import 'package:teste2/pages/noticias-page.dart';
 import 'package:teste2/pages/sobre-page.dart';
+import 'package:teste2/sign_in/loginPage.dart';
 import 'package:teste2/style/style.dart';
 import 'package:teste2/style/widget-botao.dart';
 import 'package:teste2/style/widget-efeito-rota.dart';
@@ -433,200 +434,208 @@ class _HomeState extends State<Home> {
       backgroundColor: corFundo,
       body: SafeArea(
         child: Center(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: AnimationConfiguration.toStaggeredList(
-                duration: Duration(milliseconds: 800),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  horizontalOffset: MediaQuery.of(context).size.width / 2,
-                  child: FadeInAnimation(child: widget),
-                ),
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 40),
-                            child: Image.asset(
-                              "lib/style/images/logo.png",
-                              scale: 25,
+          child: Container(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: AnimationConfiguration.toStaggeredList(
+                  duration: Duration(milliseconds: 800),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: MediaQuery.of(context).size.width / 2,
+                    child: FadeInAnimation(child: widget),
+                  ),
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 40),
+                              child: Image.asset(
+                                "lib/style/images/logo.png",
+                                scale: 25,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 10,
+                                bottom: 10,
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Seu guia em",
+                                    style: subTituloMain1,
+                                  ),
+                                  Text(
+                                    "Ouro Fino",
+                                    style: subTituloMain2,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, left: 30, right: 30, bottom: 6),
+                      child: Material(
+                        elevation: 3,
+                        shadowColor: corPrincipal2.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(7),
+                        child: InkWell(
+                          onTap: () {
+                            animatedProximoEvento();
+                          },
+                          child: AnimatedContainer(
+                            duration: Duration(microseconds: 300),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: corPrincipal2.withOpacity(0.4),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(7),
+                                topLeft: Radius.circular(7),
+                                bottomLeft: Radius.circular(7),
+                                bottomRight: Radius.circular(7),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: 10, bottom: 5, top: 5),
+                              child: Stack(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        LineAwesomeIcons.calendar,
+                                        color: corFundoLight,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(top: 5, left: 5),
+                                        child: Text(
+                                          "Eventos Futuros",
+                                          style: subTitulo5white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  abrirMenu == false
+                                      ? Positioned(
+                                          right: 10,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              focusColor: Colors.blue,
+                                              splashColor:
+                                                  Colors.white.withOpacity(0.2),
+                                              onTap: () {
+                                                animatedProximoEvento();
+                                              },
+                                              child: Icon(
+                                                LineAwesomeIcons.angle_down,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Positioned(
+                                          right: 10,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              focusColor: Colors.blue,
+                                              splashColor:
+                                                  Colors.white.withOpacity(0.2),
+                                              onTap: () {
+                                                animatedProximoEventoFechar();
+                                              },
+                                              child: Icon(
+                                                LineAwesomeIcons.angle_up,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                ],
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Column(
-                              children: <Widget>[
-                                Text(
-                                  "Seu guia em",
-                                  style: subTituloMain1,
-                                ),
-                                Text(
-                                  "Ouro Fino",
-                                  style: subTituloMain2,
-                                )
-                              ],
-                            ),
-                          )
+                        ),
+                      ),
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream:
+                          db.collection("proximosEventos").limit(2).snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: snapshot.data.documents
+                                .map((doc) => buildItem(doc, context))
+                                .toList(),
+                          );
+                        } else {
+                          return Text("");
+                        }
+                      },
+                    ),
+                    _Feed(
+                      tagHero: "noticias",
+                      text: "Notícias",
+                      foto: 'lib/style/images/noticias.jpg',
+                      pagina: Noticias(),
+                    ),
+                    _Feed(
+                      tagHero: "atracoes",
+                      text: "Atrações",
+                      foto: 'lib/style/images/atracoes.jpg',
+                      pagina: Atracoes(),
+                    ),
+                    _Feed(
+                        tagHero: "gastronomia",
+                        text: "Gastronomia",
+                        foto: 'lib/style/images/gastronomia.jpg',
+                        pagina: Gastronomia()),
+                    _Feed(
+                        tagHero: "emprego",
+                        text: "Vagas de Emprego",
+                        foto: 'lib/style/images/emprego.jpg',
+                        pagina: Emprego()),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          //botao sobre app
+                          BotaoRota(
+                            corBotao: corPrincipal2,
+                            rota: LoginPage(),
+                            icone: LineAwesomeIcons.info_circle,
+                            height: 40,
+                            texto: "Sobre",
+                            width: 150,
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 10, left: 30, right: 30, bottom: 6),
-                    child: Material(
-                      elevation: 3,
-                      shadowColor: corPrincipal2.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(7),
-                      child: InkWell(
-                        onTap: () {
-                          animatedProximoEvento();
-                        },
-                        child: AnimatedContainer(
-                          duration: Duration(microseconds: 300),
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: corPrincipal2.withOpacity(0.4),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(7),
-                              topLeft: Radius.circular(7),
-                              bottomLeft: Radius.circular(7),
-                              bottomRight: Radius.circular(7),
-                            ),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsets.only(left: 10, bottom: 5, top: 5),
-                            child: Stack(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      LineAwesomeIcons.calendar,
-                                      color: corFundoLight,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 5, left: 5),
-                                      child: Text(
-                                        "Eventos Futuros",
-                                        style: subTitulo5white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                abrirMenu == false
-                                    ? Positioned(
-                                        right: 10,
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            highlightColor: Colors.transparent,
-                                            focusColor: Colors.blue,
-                                            splashColor:
-                                                Colors.white.withOpacity(0.2),
-                                            onTap: () {
-                                              animatedProximoEvento();
-                                            },
-                                            child: Icon(
-                                              LineAwesomeIcons.angle_down,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Positioned(
-                                        right: 10,
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            highlightColor: Colors.transparent,
-                                            focusColor: Colors.blue,
-                                            splashColor:
-                                                Colors.white.withOpacity(0.2),
-                                            onTap: () {
-                                              animatedProximoEventoFechar();
-                                            },
-                                            child: Icon(
-                                              LineAwesomeIcons.angle_up,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream:
-                        db.collection("proximosEventos").limit(2).snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: snapshot.data.documents
-                              .map((doc) => buildItem(doc, context))
-                              .toList(),
-                        );
-                      } else {
-                        return Text("");
-                      }
-                    },
-                  ),
-                  _Feed(
-                    tagHero: "noticias",
-                    text: "Notícias",
-                    foto: 'lib/style/images/noticias.jpg',
-                    pagina: Noticias(),
-                  ),
-                  _Feed(
-                    tagHero: "atracoes",
-                    text: "Atrações",
-                    foto: 'lib/style/images/atracoes.jpg',
-                    pagina: Atracoes(),
-                  ),
-                  _Feed(
-                      tagHero: "gastronomia",
-                      text: "Gastronomia",
-                      foto: 'lib/style/images/gastronomia.jpg',
-                      pagina: Gastronomia()),
-                  _Feed(
-                      tagHero: "emprego",
-                      text: "Vagas de Emprego",
-                      foto: 'lib/style/images/emprego.jpg',
-                      pagina: Emprego()),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20, bottom: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        //botao sobre app
-                        BotaoRota(
-                          corBotao: corPrincipal2,
-                          rota: Sobre(),
-                          icone: LineAwesomeIcons.info_circle,
-                          height: 40,
-                          texto: "Sobre",
-                          width: 150,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

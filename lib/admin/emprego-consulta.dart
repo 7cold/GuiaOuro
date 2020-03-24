@@ -223,6 +223,7 @@ class EmpregoConsultaState extends State<EmpregoConsulta> {
                 stream: db
                     .collection('emprego')
                     .orderBy("data", descending: true)
+                    .limit(30)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {

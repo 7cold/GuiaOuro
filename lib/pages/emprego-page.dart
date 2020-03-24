@@ -8,7 +8,7 @@ final db = Firestore.instance;
 
 Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
   return Padding(
-    padding: EdgeInsets.only(bottom: 10, left: 15, right: 15),
+    padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
     child: Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
@@ -53,8 +53,15 @@ Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    doc.data['vaga'],
+                    style: subTitulo4,
+                  ),
+                ),
                 Text(
-                  doc.data['vaga'],
+                  "Descrição: ",
                   style: subTitulo4,
                 ),
                 Text(
@@ -62,8 +69,16 @@ Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
                   style: subTitulo4Reg,
                 ),
                 Text(
+                  "Local: ",
+                  style: subTitulo4,
+                ),
+                Text(
                   doc.data['local'],
                   style: subTitulo4Reg,
+                ),
+                Text(
+                  "Contato: ",
+                  style: subTitulo4,
                 ),
                 Text(
                   doc.data['contato'],
@@ -73,7 +88,7 @@ Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
                   children: <Widget>[
                     Text(
                       "Cadastrado: ",
-                      style: subTitulo4Reg,
+                      style: subTitulo4,
                     ),
                     Text(
                       '${formatDate(doc.data['data'].toDate(), [
@@ -83,43 +98,46 @@ Padding buildEmprego(DocumentSnapshot doc, BuildContext context) {
                         '/',
                         yyyy,
                       ])}',
-                      style: subTitulo4Reg,
+                      style: subTitulo4,
                     ),
                   ],
                 ),
-                doc.data['disponibilidade'] == "0"
-                    ? Row(
-                        children: <Widget>[
-                          Icon(
-                            LineAwesomeIcons.ban,
-                            color: redDelete,
-                            size: 18,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 4, left: 4),
-                            child: Text(
-                              "Indisponível",
-                              style: subTitulo4RegRed,
+                Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: doc.data['disponibilidade'] == "0"
+                      ? Row(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.ban,
+                              color: redDelete,
+                              size: 18,
                             ),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        children: <Widget>[
-                          Icon(
-                            LineAwesomeIcons.check,
-                            color: greenAcept,
-                            size: 18,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 4, left: 4),
-                            child: Text(
-                              "Disponível",
-                              style: subTitulo4RegGreen,
+                            Padding(
+                              padding: EdgeInsets.only(top: 4, left: 4),
+                              child: Text(
+                                "Indisponível",
+                                style: subTitulo4RegRed,
+                              ),
                             ),
-                          ),
-                        ],
-                      )
+                          ],
+                        )
+                      : Row(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.check,
+                              color: greenAcept,
+                              size: 18,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 4, left: 4),
+                              child: Text(
+                                "Disponível",
+                                style: subTitulo4RegGreen,
+                              ),
+                            ),
+                          ],
+                        ),
+                )
               ],
             ),
           ]),
@@ -141,7 +159,7 @@ class Emprego extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  padding: EdgeInsets.only(left: 20, bottom: 20, top: 20),
                   child: Hero(
                     tag: "emprego",
                     child: Material(
@@ -157,6 +175,7 @@ class Emprego extends StatelessWidget {
                   stream: db
                       .collection("emprego")
                       .orderBy("data", descending: true)
+                      .limit(20)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {

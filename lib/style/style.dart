@@ -310,4 +310,10 @@ TextStyle fonteChip = TextStyle(
   fontSize: 14,
 );
 
+TextStyle fonteLabel = TextStyle(
+  fontFamily: reg,
+  color: corFundoDark,
+  fontSize: 12,
+);
+
 //-----------------
