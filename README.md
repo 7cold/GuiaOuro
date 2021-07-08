@@ -1,3 +1,0 @@
-# GuiaOuro
-
-App desenvolvido em Flutter...
